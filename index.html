@@ -60,6 +60,15 @@
             left: 20%;
             border-bottom: none;
         }
+
+        /* Animações */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
     </style>
 </head>
 <body class="fifa-bg text-gray-100 min-h-screen flex flex-col justify-between selection:bg-lime-400 selection:text-black">
@@ -73,7 +82,7 @@
                         FC TACTICAL <span class="text-lime-400">GENERATOR</span>
                     </h1>
                 </div>
-                <p class="text-xs text-gray-400 font-medium tracking-wide uppercase">Matchday Squad Builder v1.5</p>
+                <p class="text-xs text-gray-400 font-medium tracking-wide uppercase">Matchday Squad Builder v1.6</p>
             </div>
         </header>
 
@@ -116,7 +125,7 @@
                 </form>
             </div>
 
-            <div class="lg:col-span-7 space-y-6 w-full">
+            <div class="lg:col-span-7 space-y-6 w-full relative">
                 
                 <div id="error-message" class="hidden p-4 bg-red-950/80 border border-red-800 text-red-300 rounded-xl text-sm"></div>
 
@@ -126,7 +135,7 @@
                     <p class="text-gray-500 text-sm max-w-sm mt-1">Insira os nomes dos atletas na aba lateral e acione o painel para processar a escalação computadorizada.</p>
                 </div>
                 
-                <div id="resultado-container" class="hidden space-y-6 animate-fade-in">
+                <div id="resultado-container" class="hidden space-y-6 animate-fade-in relative z-10">
                     
                     <div class="bg-gradient-to-r from-purple-900/30 via-[#0e101d] to-lime-950/20 border border-gray-800 p-5 rounded-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <div>
@@ -172,6 +181,50 @@
                     </div>
 
                 </div>
+
+                <div id="player-modal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+                    <div class="animate-fade-in w-72 sm:w-80 bg-gradient-to-b from-[#1c1f36] to-[#0b0c16] border-4 border-lime-400 rounded-3xl p-6 shadow-2xl shadow-lime-500/20 relative">
+                        <button onclick="closePlayerModal()" class="absolute top-4 right-4 text-gray-500 hover:text-white text-xl font-bold transition">✕</button>
+                        
+                        <div class="flex items-center gap-3 mb-5 border-b border-gray-800 pb-4">
+                            <div class="w-16 h-16 rounded-full bg-gray-900 border-2 border-dashed border-gray-700 flex items-center justify-center text-3xl">👤</div>
+                            <div>
+                                <h4 id="modal-player-name" class="text-2xl font-black italic uppercase tracking-tighter text-white fifa-font truncate w-40 sm:w-48"></h4>
+                                <p id="modal-player-team" class="text-xs text-lime-400 font-bold uppercase tracking-widest truncate w-40 sm:w-48"></p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-3">
+                            <div class="bg-gray-900/60 border border-gray-800 rounded-lg p-2.5 text-center">
+                                <span class="text-4xl font-black text-white fifa-font" id="stat-ovr"></span>
+                                <span class="text-[10px] text-gray-500 font-bold uppercase block -mt-1">GERAL</span>
+                            </div>
+                            <div class="bg-gray-900/60 border border-gray-800 rounded-lg p-2.5 text-center">
+                                <span class="text-2xl font-black text-lime-400 fifa-font" id="stat-pac"></span>
+                                <span class="text-[10px] text-gray-500 font-bold uppercase block">RIT</span>
+                            </div>
+                            <div class="bg-gray-900/60 border border-gray-800 rounded-lg p-2.5 text-center">
+                                <span class="text-2xl font-black text-lime-400 fifa-font" id="stat-sho"></span>
+                                <span class="text-[10px] text-gray-500 font-bold uppercase block">FIN</span>
+                            </div>
+                            <div class="bg-gray-900/60 border border-gray-800 rounded-lg p-2.5 text-center col-span-1">
+                                <span class="text-xl font-black text-lime-400 fifa-font" id="stat-pas"></span>
+                                <span class="text-[10px] text-gray-500 font-bold uppercase block">PAS</span>
+                            </div>
+                            <div class="bg-gray-900/60 border border-gray-800 rounded-lg p-2.5 text-center col-span-1">
+                                <span class="text-xl font-black text-lime-400 fifa-font" id="stat-dri"></span>
+                                <span class="text-[10px] text-gray-500 font-bold uppercase block">DRI</span>
+                            </div>
+                            <div class="bg-gray-900/60 border border-gray-800 rounded-lg p-2.5 text-center col-span-1">
+                                <span class="text-xl font-black text-lime-400 fifa-font" id="stat-def"></span>
+                                <span class="text-[10px] text-gray-500 font-bold uppercase block">DEF</span>
+                            </div>
+                        </div>
+
+                        <p class="text-[9px] text-gray-600 font-medium uppercase tracking-widest text-center mt-5">Atributos simulados - FC Tactical AI</p>
+                    </div>
+                </div>
+
             </div>
         </main>
     </div>
@@ -191,6 +244,7 @@
         const placeholderView = document.getElementById('placeholder-view');
         const resultadoContainer = document.getElementById('resultado-container');
         const errorContainer = document.getElementById('error-message');
+        const playerModal = document.getElementById('player-modal');
 
         function adicionarInput() {
             const totalInputs = containerInputs.querySelectorAll('.jogador-input').length + 1;
@@ -267,7 +321,6 @@
             const gridCampo = document.getElementById('field-players-grid');
             gridCampo.innerHTML = ""; // Limpa campo anterior
 
-            // Divisão tática padrão de linhas do futebol para renderização fluida (Ataque, Meio, Defesa, Goleiro)
             const linhasTaticas = { ataque: [], meio: [], defesa: [], goleiro: [] };
             
             escalacao.jogadores.forEach((player, idx) => {
@@ -277,18 +330,19 @@
                 else linhasTaticas.ataque.push(player);
             });
 
-            // Função auxiliar para gerar fileiras horizontais de jogadores espalhados na proporção correta
+            // Função auxiliar para gerar fileiras horizontais de jogadores
             const construirLinhaDoCampo = (jogadoresDaLinha) => {
                 const rowDiv = document.createElement('div');
                 rowDiv.className = "flex justify-center w-full gap-2 sm:gap-6";
                 jogadoresDaLinha.forEach(nomeCompleto => {
-                    // Separa o nome do clube entre parênteses para polimento visual
                     const match = nomeCompleto.match(/(.*?)\((.*?)\)/);
                     const nome = match ? match[1].trim() : nomeCompleto;
                     const clube = match ? match[2].trim() : "Pro Club";
 
                     const playerCard = document.createElement('div');
-                    playerCard.className = "bg-black/70 border border-lime-400/30 rounded px-1.5 py-1 text-center w-20 sm:w-24 shadow-lg backdrop-blur-sm transform hover:scale-105 transition duration-150";
+                    // NOVO: Adicionado cursor-pointer e onclick para abrir o modal
+                    playerCard.className = "bg-black/70 border border-lime-400/30 rounded px-1.5 py-1 text-center w-20 sm:w-24 shadow-lg backdrop-blur-sm transform hover:scale-110 transition duration-150 cursor-pointer";
+                    playerCard.onclick = () => openPlayerModal(nome, clube);
                     playerCard.innerHTML = `
                         <div class="text-[9px] sm:text-xs font-black truncate text-white uppercase tracking-tight">${nome}</div>
                         <div class="text-[7px] sm:text-[9px] text-lime-400 font-semibold truncate uppercase tracking-widest">${clube}</div>
@@ -298,13 +352,13 @@
                 gridCampo.appendChild(rowDiv);
             };
 
-            // Insere de cima pra baixo no campo (Ataque -> Meio -> Defesa -> Goleiro)
+            // Insere de cima pra baixo (Ataque -> Meio -> Defesa -> Goleiro)
             construirLinhaDoCampo(linhasTaticas.ataque);
             construirLinhaDoCampo(linhasTaticas.meio);
             construirLinhaDoCampo(linhasTaticas.defesa);
             construirLinhaDoCampo(linhasTaticas.goleiro);
 
-            // 2. RENDERIZAÇÃO DOS RESERVAS E SUGERIDOS (Lista Técnica Separada)
+            // 2. RENDERIZAÇÃO DOS RESERVAS E SUGERIDOS
             const ulReservas = document.getElementById('team-reservas');
             ulReservas.innerHTML = "";
             if (escalacao.jogadores_reservas && escalacao.jogadores_reservas.length > 0) {
@@ -332,8 +386,36 @@
             resultadoContainer.scrollIntoView({ behavior: 'smooth' });
         }
 
+        // FUNÇÕES DO MODAL (CARD) - NOVO
+        function openPlayerModal(playerName, playerTeam) {
+            document.getElementById('modal-player-name').innerText = playerName;
+            document.getElementById('modal-player-team').innerText = playerTeam;
+            
+            // Simula estatísticas aleatórias (75-98) - Já que não temos esses dados na API
+            const ovr = Math.floor(Math.random() * (98 - 85 + 1)) + 85;
+            document.getElementById('stat-ovr').innerText = ovr;
+            document.getElementById('stat-pac').innerText = Math.floor(Math.random() * (ovr - 75 + 1)) + 75;
+            document.getElementById('stat-sho').innerText = Math.floor(Math.random() * (ovr - 75 + 1)) + 75;
+            document.getElementById('stat-pas').innerText = Math.floor(Math.random() * (ovr - 75 + 1)) + 75;
+            document.getElementById('stat-dri').innerText = Math.floor(Math.random() * (ovr - 75 + 1)) + 75;
+            document.getElementById('stat-def').innerText = Math.floor(Math.random() * (ovr - 60 + 1)) + 60; // Goleiros/Zagueiros variam mais
+
+            playerModal.classList.remove('hidden');
+        }
+
+        function closePlayerModal() {
+            playerModal.classList.add('hidden');
+        }
+
+        // Fecha o modal ao clicar fora do card
+        playerModal.addEventListener('click', function(e) {
+            if (e.target === playerModal) {
+                closePlayerModal();
+            }
+        });
+
         function mostrarErro(mensagem) {
-            errorContainer.innerText = mensaje;
+            errorContainer.innerText = mensagem;
             errorContainer.classList.remove('hidden');
             resultadoContainer.classList.add('hidden');
         }
@@ -355,6 +437,7 @@
             resultadoContainer.classList.add('hidden');
             placeholderView.classList.remove('hidden');
             errorContainer.classList.add('hidden');
+            closePlayerModal(); // Garante que o modal fecha no reset
         }
     </script>
 </body>
