@@ -116,7 +116,7 @@
         async function gerarEscalacao(event) {
             event.preventDefault();
             const inputs = document.querySelectorAll('.jogador-input');
-            const listaJogadores = Array.from(inputs)
+            const jogadores = Array.from(inputs)
                 .map(i => i.value.trim())
                 .filter(valor => valor !== "");
             errorContainer.classList.add('hidden');
@@ -130,7 +130,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ jogadores: listaJogadores })
+                    body: JSON.stringify({ jogadores: jogadores })
                 });
                 const data = await response.json();
                 if (data.status === "success") {
