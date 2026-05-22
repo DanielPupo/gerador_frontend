@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Escalação</title>
+    <!-- Importando o Tailwind CSS para visual moderno -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen font-sans flex flex-col justify-between">
+    <div>
+        <!-- Header -->
+        <header class="bg-green-700 text-white py-6 shadow-md text-center">
+            <h1 class="text-3xl font-bold tracking-wide">⚽ Gerador de Escalação</h1>
+            <p class="text-sm opacity-90 mt-1">Insira os jogadores e deixe o Técnico Gemini montar o time!</p>
+        </header>
+
+        <main class="max-w-2xl mx-auto p-4 mt-6">
+            <!-- Formulário de Jogadores -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-lg font-semibold text-gray-700 mb-4">Jogadores (Mínimo 11)</h2>
+                <form id="team-form" onsubmit="gerarEscalacao(event)">
+                    <div id="inputs-container" class="space-y-3">
+                        <input type="text" placeholder="Jogador 1" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
+                        <input type="text" placeholder="Jogador 2" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
+                        <input type="text" placeholder="Jogador 3" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
+                        <input type="text" placeholder="Jogador 4" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
+                        <input type="text" placeholder="Jogador 5" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
+                        <input type="text" placeholder="Jogador 6" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
+                        <input type="text" placeholder="Jogador 7" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
+                        <input type="text" placeholder="Jogador 8" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
+                        <input type="text" placeholder="Jogador 9" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
+                        <input type="text" placeholder="Jogador 10" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
+                        <input type="text" placeholder="Jogador 11" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
+                    </div>
+                    <button type="button" onclick="adicionarInput()" class="mt-3 text-sm text-green-700 hover:text-green-800 font-medium flex items-center gap-1">
+                        ➕ Adicionar outro jogador
+                    </button>
+                    <div class="mt-6 flex gap-4">
+                        <button type="submit" id="btn-enviar" class="flex-1 bg-green-700 hover:bg-green-800 text-white font-semibold py=3 px=4 rounded-md transition duration=20０ flex justify-center items-center gap=2">
+                            <span>Gerar escalação</span>
+                            <div id="loading-spinner" class="hidden w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        </button>
+                        <button type="button" onclick="reiniciarFormulario()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-md transition duration-200">
+                            Reiniciar
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div id="error-message" class="hidden mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-md text-sm"></div>
+            <div id="resultado-container" class="hidden mt-6 bg-white p-6 rounded-lg shadow-md border-t-4 border-green-700 mb-12">
+                <h2 id="team-nome" class="text-2xl font-bold text-gray-800 mb-2"></h2>
+                <div class="flex gap-4 text-sm text-gray-600 mb-6 bg-green-50 p-3 rounded-md">
+                    <p>👥 <strong>Jogadores:</strong> <span id="team-quantidade"></span></p>
+                </div>
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-gray-700 border-b pb-1 mb-3">🏅 Qualidades do Time</h3>
+                    <p id="team-qualidades" class="text-gray-600"></p>
+                </div>
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-gray-700 border-b pb-1 mb-3">📋 Jogadores Escalados</h3>
+                    <ul id="team-jogadores" class="list-disc pl-5 space-y-1 text-gray-600"></ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-700 border-b pb-1 mb-3">📊 Variabilidade do Time</h3>
+                    <ul id="team-variabilidade" class="list-disc pl-5 space-y-1 text-gray-600"></ul>
+                </div>
+            </div>
+        </main>
+    </div>
+    <footer class="bg-green-700 text-white py-6 mt-12 shadow-inner text-center text-sm">
+        <div class="max-w-2xl mx-auto px-4 space-y-1.5">
+            <p class="font-semibold">© Gerador de Escalação com IA - Google Gemini</p>
+            <p class="text-xs opacity-85 leading-relaxed">
+                ⚠️ O Gemini é uma IA e pode cometer erros. Valide a escalação antes de usá-la em campo.
+            </p>
+        </div>
+    </footer>
+    <script>
+        // Altere a URL abaixo para a URL do seu backend se necessário
+        const API_URL = "http://localhost:5000/generate";
+        const containerInputs = document.getElementById('inputs-container');
+        const spinner = document.getElementById('loading-spinner');
+        const btnEnviar = document.getElementById('btn-enviar');
+        const resultadoContainer = document.getElementById('resultado-container');
+        const errorContainer = document.getElementById('error-message');
+
+        function adicionarInput() {
+            const totalInputs = containerInputs.querySelectorAll('.jogador-input').length + 1;
+            const wrapper = document.createElement('div');
+            wrapper.className = 'flex gap-2 items-center animate-fade-in';
+            const novoInput = document.createElement('input');
+            novoInput.type = 'text';
+            novoInput.placeholder = `Jogador ${totalInputs}`;
+            novoInput.className = 'jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none';
+            const btnDeletar = document.createElement('button');
+            btnDeletar.type = 'button';
+            btnDeletar.innerHTML = '✕';
+            btnDeletar.className = 'bg-red-100 hover:bg-red-200 text-red-600 font-bold p-2.5 rounded-md transition duration-150 h-full px-4';
+            btnDeletar.onclick = function() {
+                wrapper.remove();
+                reorganizarPlaceholders();
+            };
+            wrapper.appendChild(novoInput);
+            wrapper.appendChild(btnDeletar);
+            containerInputs.appendChild(wrapper);
+        }
+
+        function reorganizarPlaceholders() {
+            const inputs = containerInputs.querySelectorAll('.jogador-input');
+            inputs.forEach((input, index) => {
+                input.placeholder = `Jogador ${index + 1}`;
+            });
+        }
+
+        async function gerarEscalacao(event) {
+            event.preventDefault();
+            const inputs = document.querySelectorAll('.jogador-input');
+            const listaJogadores = Array.from(inputs)
+                .map(i => i.value.trim())
+                .filter(valor => valor !== "");
+            errorContainer.classList.add('hidden');
+            resultadoContainer.classList.add('hidden');
+            spinner.classList.remove('hidden');
+            btnEnviar.disabled = true;
+            btnEnviar.classList.add('opacity-75');
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ jogadores: listaJogadores })
+                });
+                const data = await response.json();
+                if (data.status === "success") {
+                    exibirEscalacao(data.dados_escalacao);
+                } else {
+                    mostrarErro(data.message || "Ocorreu um erro ao processar a requisição.");
+                }
+            } catch (error) {
+                mostrarErro("Não foi possível conectar à API. Verifique se o servidor está rodando ou se a URL está correta.");
+            } finally {
+                spinner.classList.add('hidden');
+                btnEnviar.disabled = false;
+                btnEnviar.classList.remove('opacity-75');
+            }
+        }
+
+        function exibirEscalacao(escalacao) {
+            document.getElementById('team-nome').innerText = escalacao.nome_do_time;
+            document.getElementById('team-quantidade').innerText = escalacao.quantidade_de_jogadores;
+            document.getElementById('team-qualidades').innerText = escalacao.qualidades_do_time;
+            const ulJogadores = document.getElementById('team-jogadores');
+            ulJogadores.innerHTML = "";
+            escalacao.jogadores.forEach(jog => {
+                const li = document.createElement('li');
+                li.innerText = jog;
+                ulJogadores.appendChild(li);
+            });
+            const ulVariabilidade = document.getElementById('team-variabilidade');
+            ulVariabilidade.innerHTML = "";
+            escalacao.variabilidade_do_time.forEach(varia => {
+                const li = document.createElement('li');
+                li.innerText = varia;
+                ulVariabilidade.appendChild(li);
+            });
+            resultadoContainer.classList.remove('hidden');
+            resultadoContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function mostrarErro(mensagem) {
+            errorContainer.innerText = mensagem;
+            errorContainer.classList.remove('hidden');
+        }
+
+        function reiniciarFormulario() {
+            containerInputs.innerHTML = `
+                <input type="text" placeholder="Jogador 1" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
+                <input type="text" placeholder="Jogador 2" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
+                <input type="text" placeholder="Jogador 3" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
+            `;
+            resultadoContainer.classList.add('hidden');
+            errorContainer.classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
