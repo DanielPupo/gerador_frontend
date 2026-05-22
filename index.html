@@ -3,111 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Escalação</title>
+    <title>FC Tactical Generator | Gemini AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,800;1,700&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .fifa-font {
+            font-family: 'Barlow Condensed', sans-serif;
+        }
+        /* Fundo estilo Menu do EA FC / FIFA */
+        .fifa-bg {
+            background: radial-gradient(circle at 50% 0%, #16192b 0%, #0b0c16 100%);
+        }
+        /* Linhas do campo de futebol tático */
+        .soccer-field {
+            background: radial-gradient(circle at center, #144026 0%, #0d2b19 100%);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .field-line {
+            position: absolute;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            pointer-events: none;
+        }
+        .center-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .center-line {
+            width: 100%;
+            top: 50%;
+            left: 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        .penalty-area-top {
+            width: 60%;
+            height: 70px;
+            top: 0;
+            left: 20%;
+            border-top: none;
+        }
+        .penalty-area-bot {
+            width: 60%;
+            height: 70px;
+            bottom: 0;
+            left: 20%;
+            border-bottom: none;
+        }
+    </style>
 </head>
-<body class="bg-gray-50 min-h-screen font-sans flex flex-col justify-between">
+<body class="fifa-bg text-gray-100 min-h-screen flex flex-col justify-between selection:bg-lime-400 selection:text-black">
+    
     <div>
-        <header class="bg-green-700 text-white py-6 shadow-md text-center">
-            <h1 class="text-3xl font-bold tracking-wide">⚽ Gerador de Escalação</h1>
-            <p class="text-sm opacity-90 mt-1">Insira os jogadores e deixe o Técnico Gemini montar o time!</p>
+        <header class="border-b border-gray-800 bg-[#0e101d]/90 backdrop-blur sticky top-0 z-50">
+            <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-2">
+                <div class="flex items-center gap-3">
+                    <span class="bg-lime-400 text-black text-xs font-black px-2 py-0.5 rounded italic fifa-font tracking-wider">GEMINI AI</span>
+                    <h1 class="text-2xl font-black italic tracking-tight uppercase fifa-font text-white">
+                        FC TACTICAL <span class="text-lime-400">GENERATOR</span>
+                    </h1>
+                </div>
+                <p class="text-xs text-gray-400 font-medium tracking-wide uppercase">Matchday Squad Builder v1.5</p>
+            </div>
         </header>
 
-        <main class="max-w-2xl mx-auto p-4 mt-6">
-            <div class="bg-white p-6 rounded-lg shadow-md">
-                <h2 class="text-lg font-semibold text-gray-700 mb-4">Jogadores (Mínimo 11 recomendados)</h2>
+        <main class="max-w-5xl mx-auto p-4 mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            
+            <div class="lg:col-span-5 bg-[#0e101d] border border-gray-800 p-6 rounded-xl shadow-2xl">
+                <div class="flex items-center justify-between mb-4 border-b border-gray-800 pb-3">
+                    <h2 class="text-lg font-bold uppercase tracking-wide fifa-font text-gray-300">📋 Inscrição do Elenco</h2>
+                    <span class="text-xs bg-gray-800 text-gray-400 font-bold px-2 py-1 rounded">Min 11</span>
+                </div>
+                
                 <form id="team-form" onsubmit="gerarEscalacao(event)">
-                    <div id="inputs-container" class="space-y-3">
-                        <input type="text" placeholder="Jogador 1" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
-                        <input type="text" placeholder="Jogador 2" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
-                        <input type="text" placeholder="Jogador 3" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
-                        <input type="text" placeholder="Jogador 4" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
-                        <input type="text" placeholder="Jogador 5" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
-                        <input type="text" placeholder="Jogador 6" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
-                        <input type="text" placeholder="Jogador 7" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
-                        <input type="text" placeholder="Jogador 8" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
-                        <input type="text" placeholder="Jogador 9" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
-                        <input type="text" placeholder="Jogador 10" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
-                        <input type="text" placeholder="Jogador 11" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
+                    <div id="inputs-container" class="space-y-2.5 max-h-[420px] overflow-y-auto pr-1">
+                        <input type="text" placeholder="Jogador 1" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:border-transparent focus:outline-none transition">
+                        <input type="text" placeholder="Jogador 2" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:border-transparent focus:outline-none transition">
+                        <input type="text" placeholder="Jogador 3" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:border-transparent focus:outline-none transition">
+                        <input type="text" placeholder="Jogador 4" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:border-transparent focus:outline-none transition">
+                        <input type="text" placeholder="Jogador 5" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:border-transparent focus:outline-none transition">
+                        <input type="text" placeholder="Jogador 6" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:border-transparent focus:outline-none transition">
+                        <input type="text" placeholder="Jogador 7" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:border-transparent focus:outline-none transition">
+                        <input type="text" placeholder="Jogador 8" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:border-transparent focus:outline-none transition">
+                        <input type="text" placeholder="Jogador 9" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:border-transparent focus:outline-none transition">
+                        <input type="text" placeholder="Jogador 10" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:border-transparent focus:outline-none transition">
+                        <input type="text" placeholder="Jogador 11" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:border-transparent focus:outline-none transition">
                     </div>
-                    <button type="button" onclick="adicionarInput()" class="mt-3 text-sm text-green-700 hover:text-green-800 font-medium flex items-center gap-1">
-                        ➕ Adicionar outro jogador
+                    
+                    <button type="button" onclick="adicionarInput()" class="mt-4 text-xs text-lime-400 hover:text-lime-300 font-bold uppercase tracking-wider flex items-center gap-1.5 transition">
+                        ➕ ADICIONAR ATLETA EXTRA
                     </button>
-                    <div class="mt-6 flex gap-4">
-                        <button type="submit" id="btn-enviar" class="flex-1 bg-green-700 hover:bg-green-800 text-white font-semibold py-3 px-4 rounded-md transition duration-200 flex justify-center items-center gap-2">
-                            <span>Gerar escalação</span>
-                            <div id="loading-spinner" class="hidden w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+
+                    <div class="mt-6 flex gap-3">
+                        <button type="submit" id="btn-enviar" class="flex-1 bg-gradient-to-r from-lime-500 to-green-600 hover:from-lime-400 hover:to-green-500 text-black font-black uppercase tracking-wider py-3.5 px-4 rounded-xl transition duration-300 flex justify-center items-center gap-2 text-sm shadow-lg shadow-lime-500/10">
+                            <span>SUBMETER ESTRATÉGIA</span>
+                            <div id="loading-spinner" class="hidden w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
                         </button>
-                        <button type="button" onclick="reiniciarFormulario()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-md transition duration-200">
-                            Reiniciar
+                        <button type="button" onclick="reiniciarFormulario()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 font-bold uppercase tracking-wider py-3.5 px-5 rounded-xl transition text-xs">
+                            RESET
                         </button>
                     </div>
                 </form>
             </div>
 
-            <div id="error-message" class="hidden mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-md text-sm"></div>
-            
-            <div id="resultado-container" class="hidden mt-6 bg-white p-6 rounded-lg shadow-md border-t-4 border-green-700 mb-12">
-                <h2 id="team-nome" class="text-2xl font-bold text-gray-800 mb-2"></h2>
+            <div class="lg:col-span-7 space-y-6 w-full">
                 
-                <div class="flex gap-4 text-sm text-gray-600 mb-6 bg-green-50 p-3 rounded-md">
-                    <p>👥 <strong>Resumo do Elenco:</strong> <span id="team-quantidade"></span></p>
-                </div>
+                <div id="error-message" class="hidden p-4 bg-red-950/80 border border-red-800 text-red-300 rounded-xl text-sm"></div>
 
-                <div class="mb-6">
-                    <h3 class="text-lg font-semibold text-gray-700 border-b pb-1 mb-3">📋 Jogadores Escalados (Titulares)</h3>
-                    <ul id="team-jogadores" class="list-disc pl-5 space-y-1 text-gray-600"></ul>
+                <div id="placeholder-view" class="bg-[#0e101d] border border-dashed border-gray-800 p-12 rounded-xl text-center flex flex-col items-center justify-center min-h-[400px]">
+                    <div class="w-16 h-16 bg-gray-900 border border-gray-800 rounded-full flex items-center justify-center mb-4 text-2xl text-gray-500 animate-pulse">⚽</div>
+                    <h3 class="text-xl font-bold uppercase fifa-font tracking-wide text-gray-400">Aguardando Diretrizes Táticas</h3>
+                    <p class="text-gray-500 text-sm max-w-sm mt-1">Insira os nomes dos atletas na aba lateral e acione o painel para processar a escalação computadorizada.</p>
                 </div>
+                
+                <div id="resultado-container" class="hidden space-y-6 animate-fade-in">
+                    
+                    <div class="bg-gradient-to-r from-purple-900/30 via-[#0e101d] to-lime-950/20 border border-gray-800 p-5 rounded-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                            <h2 id="team-nome" class="text-3xl font-black italic uppercase tracking-tight text-white fifa-font"></h2>
+                            <p class="text-xs text-lime-400 font-bold uppercase tracking-widest mt-0.5">ELENCO PRINCIPAL CONFIRMADO</p>
+                        </div>
+                        <div class="bg-black/40 border border-gray-800 px-3 py-1.5 rounded-lg text-right">
+                            <span class="text-[10px] text-gray-500 font-bold uppercase block">SUMÁRIO</span>
+                            <span id="team-quantidade" class="text-xs font-bold text-gray-300"></span>
+                        </div>
+                    </div>
 
-                <div class="mb-6">
-                    <h3 class="text-lg font-semibold text-gray-700 border-b pb-1 mb-3">📋 Jogadores Reservas e Sugeridos por Nós</h3>
-                    <ul id="team-reservas" class="list-disc pl-5 space-y-1 text-gray-600"></ul>
-                </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-2.5 fifa-font">🟢 DISPOSIÇÃO TÁTICA EM CAMPO</h3>
+                        <div class="soccer-field rounded-xl w-full aspect-[4/5] sm:aspect-[4/3] min-h-[460px] shadow-2xl shadow-black/80">
+                            <div class="field-line center-circle"></div>
+                            <div class="field-line center-line"></div>
+                            <div class="field-line penalty-area-top"></div>
+                            <div class="field-line penalty-area-bot"></div>
+                            
+                            <div id="field-players-grid" class="absolute inset-0 p-4 grid grid-rows-4 justify-items-center items-center z-10">
+                                </div>
+                        </div>
+                    </div>
 
-                <div class="mb-6">
-                    <h3 class="text-lg font-semibold text-gray-700 border-b pb-1 mb-3">🏅 Qualidades do Time</h3>
-                    <p id="team-qualidades" class="text-gray-600"></p>
-                </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-[#0e101d] border border-gray-800 p-5 rounded-xl">
+                            <h3 class="text-sm font-bold text-lime-400 uppercase tracking-wider mb-2.5 border-b border-gray-800 pb-1.5 fifa-font">⚡ ATRIBUTOS COLETIVOS</h3>
+                            <p id="team-qualidades" class="text-sm text-gray-400 leading-relaxed"></p>
+                        </div>
+                        
+                        <div class="bg-[#0e101d] border border-gray-800 p-5 rounded-xl">
+                            <h3 class="text-sm font-bold text-lime-400 uppercase tracking-wider mb-2.5 border-b border-gray-800 pb-1.5 fifa-font">🔄 BANCO DE RESERVAS E SUGERIDOS</h3>
+                            <ul id="team-reservas" class="text-sm text-gray-400 space-y-2 list-none">
+                                </ul>
+                        </div>
+                    </div>
 
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-700 border-b pb-1 mb-3">📊 Variabilidade e Estratégia Tática</h3>
-                    <ul id="team-variabilidade" class="list-disc pl-5 space-y-1 text-gray-600"></ul>
+                    <div class="bg-[#0e101d] border border-gray-800 p-5 rounded-xl">
+                        <h3 class="text-sm font-bold text-gray-300 uppercase tracking-wider mb-3 border-b border-gray-800 pb-1.5 fifa-font">📊 PLANO DE JOGO E ALTERNATIVAS</h3>
+                        <ul id="team-variabilidade" class="text-sm text-gray-400 space-y-2 list-disc pl-4 leading-relaxed">
+                            </ul>
+                    </div>
+
                 </div>
             </div>
         </main>
     </div>
 
-    <footer class="bg-green-700 text-white py-6 mt-12 shadow-inner text-center text-sm">
-        <div class="max-w-2xl mx-auto px-4 space-y-1.5">
-            <p class="font-semibold">© Gerador de Escalação com IA - Google Gemini</p>
-            <p class="text-xs opacity-85 leading-relaxed">
-                ⚠️ O Gemini é uma IA e pode cometer erros. Valide a escalação antes de usá-la em campo.
-            </p>
+    <footer class="border-t border-gray-900 bg-[#06070d] py-6 mt-16 text-center text-xs text-gray-600">
+        <div class="max-w-5xl mx-auto px-4 space-y-1">
+            <p class="font-bold uppercase tracking-widest text-gray-500 fifa-font">EA SPORTS GEMINI TACTICS SYSTEM</p>
+            <p class="opacity-75">Sistemas autônomos de IA estruturados em simulação estatística real.</p>
         </div>
     </footer>
 
     <script>
-        // Altere a URL abaixo para a URL oficial do seu backend de produção ou localhost (ex: http://127.0.0.1:5000/generate)
         const API_URL = "https://gerador-backend-bice.vercel.app/generate";
         const containerInputs = document.getElementById('inputs-container');
         const spinner = document.getElementById('loading-spinner');
         const btnEnviar = document.getElementById('btn-enviar');
+        const placeholderView = document.getElementById('placeholder-view');
         const resultadoContainer = document.getElementById('resultado-container');
         const errorContainer = document.getElementById('error-message');
 
         function adicionarInput() {
             const totalInputs = containerInputs.querySelectorAll('.jogador-input').length + 1;
             const wrapper = document.createElement('div');
-            wrapper.className = 'flex gap-2 items-center';
+            wrapper.className = 'flex gap-2 items-center w-full';
+            
             const novoInput = document.createElement('input');
             novoInput.type = 'text';
             novoInput.placeholder = `Jogador ${totalInputs}`;
-            novoInput.className = 'jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none';
+            novoInput.className = 'jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none transition';
             
             const btnDeletar = document.createElement('button');
             btnDeletar.type = 'button';
             btnDeletar.innerHTML = '✕';
-            btnDeletar.className = 'bg-red-100 hover:bg-red-200 text-red-600 font-bold p-2.5 rounded-md transition duration-150 h-full px-4';
+            btnDeletar.className = 'bg-red-950/60 hover:bg-red-900 text-red-400 border border-red-900/50 font-bold p-3 rounded-lg transition text-sm px-4';
             btnDeletar.onclick = function() {
                 wrapper.remove();
                 reorganizarPlaceholders();
@@ -133,7 +231,6 @@
                 .filter(valor => valor !== "");
 
             errorContainer.classList.add('hidden');
-            resultadoContainer.classList.add('hidden');
             spinner.classList.remove('hidden');
             btnEnviar.disabled = true;
             btnEnviar.classList.add('opacity-75');
@@ -141,20 +238,19 @@
             try {
                 const response = await fetch(API_URL, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ jogadores: jogadores })
                 });
                 const data = await response.json();
                 
                 if (data.status === "success") {
+                    placeholderView.classList.add('hidden');
                     exibirEscalacao(data.dados_escalacao);
                 } else {
-                    mostrarErro(data.message || "Ocorreu um erro ao processar a requisição.");
+                    mostrarErro(data.message || "Erro interno de rede.");
                 }
             } catch (error) {
-                mostrarErro("Não foi possível conectar à API. Verifique se o seu servidor backend está rodando localmente ou se o link do Vercel está correto.");
+                mostrarErro("Falha crítica ao conectar com o barramento do backend táctico.");
             } finally {
                 spinner.classList.add('hidden');
                 btnEnviar.disabled = false;
@@ -167,36 +263,67 @@
             document.getElementById('team-quantidade').innerText = escalacao.quantidade_de_jogadores;
             document.getElementById('team-qualidades').innerText = escalacao.qualidades_do_time;
             
-            // 1. Renderiza os Titulares (Lista 1)
-            const ulJogadores = document.getElementById('team-jogadores');
-            ulJogadores.innerHTML = "";
-            escalacao.jogadores.forEach(jog => {
-                const li = document.createElement('li');
-                li.innerText = jog;
-                ulJogadores.appendChild(li);
+            // 1. DISTRIBUIÇÃO E CONSTRUÇÃO DO CAMPINHO (11 Titulares)
+            const gridCampo = document.getElementById('field-players-grid');
+            gridCampo.innerHTML = ""; // Limpa campo anterior
+
+            // Divisão tática padrão de linhas do futebol para renderização fluida (Ataque, Meio, Defesa, Goleiro)
+            const linhasTaticas = { ataque: [], meio: [], defesa: [], goleiro: [] };
+            
+            escalacao.jogadores.forEach((player, idx) => {
+                if(idx === 0) linhasTaticas.goleiro.push(player);
+                else if(idx >= 1 && idx <= 4) linhasTaticas.defesa.push(player);
+                else if(idx >= 5 && idx <= 8) linhasTaticas.meio.push(player);
+                else linhasTaticas.ataque.push(player);
             });
 
-            // 2. Renderiza os Reservas / Sugeridos (Lista 2 separada)
+            // Função auxiliar para gerar fileiras horizontais de jogadores espalhados na proporção correta
+            const construirLinhaDoCampo = (jogadoresDaLinha) => {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = "flex justify-center w-full gap-2 sm:gap-6";
+                jogadoresDaLinha.forEach(nomeCompleto => {
+                    // Separa o nome do clube entre parênteses para polimento visual
+                    const match = nomeCompleto.match(/(.*?)\((.*?)\)/);
+                    const nome = match ? match[1].trim() : nomeCompleto;
+                    const clube = match ? match[2].trim() : "Pro Club";
+
+                    const playerCard = document.createElement('div');
+                    playerCard.className = "bg-black/70 border border-lime-400/30 rounded px-1.5 py-1 text-center w-20 sm:w-24 shadow-lg backdrop-blur-sm transform hover:scale-105 transition duration-150";
+                    playerCard.innerHTML = `
+                        <div class="text-[9px] sm:text-xs font-black truncate text-white uppercase tracking-tight">${nome}</div>
+                        <div class="text-[7px] sm:text-[9px] text-lime-400 font-semibold truncate uppercase tracking-widest">${clube}</div>
+                    `;
+                    rowDiv.appendChild(playerCard);
+                });
+                gridCampo.appendChild(rowDiv);
+            };
+
+            // Insere de cima pra baixo no campo (Ataque -> Meio -> Defesa -> Goleiro)
+            construirLinhaDoCampo(linhasTaticas.ataque);
+            construirLinhaDoCampo(linhasTaticas.meio);
+            construirLinhaDoCampo(linhasTaticas.defesa);
+            construirLinhaDoCampo(linhasTaticas.goleiro);
+
+            // 2. RENDERIZAÇÃO DOS RESERVAS E SUGERIDOS (Lista Técnica Separada)
             const ulReservas = document.getElementById('team-reservas');
             ulReservas.innerHTML = "";
             if (escalacao.jogadores_reservas && escalacao.jogadores_reservas.length > 0) {
                 escalacao.jogadores_reservas.forEach(res => {
                     const li = document.createElement('li');
-                    li.innerText = res;
+                    li.className = "flex items-center gap-2 border-b border-gray-900 pb-1.5 text-gray-300";
+                    li.innerHTML = `<span class="text-lime-400 text-xs">▲</span> <span>${res}</span>`;
                     ulReservas.appendChild(li);
                 });
             } else {
-                const li = document.createElement('li');
-                li.innerText = "Nenhum jogador reserva adicional foi sugerido pela IA.";
-                li.className = "italic text-gray-400 list-none";
-                ulReservas.appendChild(li);
+                ulReservas.innerHTML = `<li class="italic text-gray-600 text-xs">Nenhum suplente foi requisitado ao banco.</li>`;
             }
 
-            // 3. Renderiza as Variações Táticas
+            // 3. VARIABILIDADE E DINÂMICA DE JOGO
             const ulVariabilidade = document.getElementById('team-variabilidade');
             ulVariabilidade.innerHTML = "";
             escalacao.variabilidade_do_time.forEach(varia => {
                 const li = document.createElement('li');
+                li.className = "text-gray-400 text-sm pl-1";
                 li.innerText = varia;
                 ulVariabilidade.appendChild(li);
             });
@@ -206,25 +333,27 @@
         }
 
         function mostrarErro(mensagem) {
-            errorContainer.innerText = mensagem;
+            errorContainer.innerText = mensaje;
             errorContainer.classList.remove('hidden');
+            resultadoContainer.classList.add('hidden');
         }
 
         function reiniciarFormulario() {
             containerInputs.innerHTML = `
-                <input type="text" placeholder="Jogador 1" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
-                <input type="text" placeholder="Jogador 2" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
-                <input type="text" placeholder="Jogador 3" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
-                <input type="text" placeholder="Jogador 4" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
-                <input type="text" placeholder="Jogador 5" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
-                <input type="text" placeholder="Jogador 6" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
-                <input type="text" placeholder="Jogador 7" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
-                <input type="text" placeholder="Jogador 8" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
-                <input type="text" placeholder="Jogador 9" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
-                <input type="text" placeholder="Jogador 10" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
-                <input type="text" placeholder="Jogador 11" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
+                <input type="text" placeholder="Jogador 1" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none transition">
+                <input type="text" placeholder="Jogador 2" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none transition">
+                <input type="text" placeholder="Jogador 3" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none transition">
+                <input type="text" placeholder="Jogador 4" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none transition">
+                <input type="text" placeholder="Jogador 5" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none transition">
+                <input type="text" placeholder="Jogador 6" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none transition">
+                <input type="text" placeholder="Jogador 7" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none transition">
+                <input type="text" placeholder="Jogador 8" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none transition">
+                <input type="text" placeholder="Jogador 9" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none transition">
+                <input type="text" placeholder="Jogador 10" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none transition">
+                <input type="text" placeholder="Jogador 11" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none transition">
             `;
             resultadoContainer.classList.add('hidden');
+            placeholderView.classList.remove('hidden');
             errorContainer.classList.add('hidden');
         }
     </script>
