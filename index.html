@@ -4,21 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerador de Escalação</title>
-    <!-- Importando o Tailwind CSS para visual moderno -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 min-h-screen font-sans flex flex-col justify-between">
     <div>
-        <!-- Header -->
         <header class="bg-green-700 text-white py-6 shadow-md text-center">
             <h1 class="text-3xl font-bold tracking-wide">⚽ Gerador de Escalação</h1>
             <p class="text-sm opacity-90 mt-1">Insira os jogadores e deixe o Técnico Gemini montar o time!</p>
         </header>
 
         <main class="max-w-2xl mx-auto p-4 mt-6">
-            <!-- Formulário de Jogadores -->
             <div class="bg-white p-6 rounded-lg shadow-md">
-                <h2 class="text-lg font-semibold text-gray-700 mb-4">Jogadores (Mínimo 11)</h2>
+                <h2 class="text-lg font-semibold text-gray-700 mb-4">Jogadores (Mínimo 11 recomendados)</h2>
                 <form id="team-form" onsubmit="gerarEscalacao(event)">
                     <div id="inputs-container" class="space-y-3">
                         <input type="text" placeholder="Jogador 1" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
@@ -47,31 +44,39 @@
                     </div>
                 </form>
             </div>
+
             <div id="error-message" class="hidden mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-md text-sm"></div>
+            
             <div id="resultado-container" class="hidden mt-6 bg-white p-6 rounded-lg shadow-md border-t-4 border-green-700 mb-12">
                 <h2 id="team-nome" class="text-2xl font-bold text-gray-800 mb-2"></h2>
+                
                 <div class="flex gap-4 text-sm text-gray-600 mb-6 bg-green-50 p-3 rounded-md">
-                    <p>👥 <strong>Jogadores:</strong> <span id="team-quantidade"></span></p>
+                    <p>👥 <strong>Resumo do Elenco:</strong> <span id="team-quantidade"></span></p>
                 </div>
+
                 <div class="mb-6">
-                    <h3 class="text-lg font-semibold text-gray-700 border-b pb-1 mb-3">📋 Reservas sugeridos</h3>
-                    <p id="team-reservas" class="text-gray-600"></p>
+                    <h3 class="text-lg font-semibold text-gray-700 border-b pb-1 mb-3">📋 Jogadores Escalados (Titulares)</h3>
+                    <ul id="team-jogadores" class="list-disc pl-5 space-y-1 text-gray-600"></ul>
                 </div>
+
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-gray-700 border-b pb-1 mb-3">📋 Jogadores Reservas e Sugeridos por Nós</h3>
+                    <ul id="team-reservas" class="list-disc pl-5 space-y-1 text-gray-600"></ul>
+                </div>
+
                 <div class="mb-6">
                     <h3 class="text-lg font-semibold text-gray-700 border-b pb-1 mb-3">🏅 Qualidades do Time</h3>
                     <p id="team-qualidades" class="text-gray-600"></p>
                 </div>
-                <div class="mb-6">
-                    <h3 class="text-lg font-semibold text-gray-700 border-b pb-1 mb-3">📋 Jogadores Escalados</h3>
-                    <ul id="team-jogadores" class="list-disc pl-5 space-y-1 text-gray-600"></ul>
-                </div>
+
                 <div>
-                    <h3 class="text-lg font-semibold text-gray-700 border-b pb-1 mb-3">📊 Variabilidade do Time</h3>
+                    <h3 class="text-lg font-semibold text-gray-700 border-b pb-1 mb-3">📊 Variabilidade e Estratégia Tática</h3>
                     <ul id="team-variabilidade" class="list-disc pl-5 space-y-1 text-gray-600"></ul>
                 </div>
             </div>
         </main>
     </div>
+
     <footer class="bg-green-700 text-white py-6 mt-12 shadow-inner text-center text-sm">
         <div class="max-w-2xl mx-auto px-4 space-y-1.5">
             <p class="font-semibold">© Gerador de Escalação com IA - Google Gemini</p>
@@ -80,8 +85,9 @@
             </p>
         </div>
     </footer>
+
     <script>
-        // Altere a URL abaixo para a URL do seu backend se necessário
+        // Altere a URL abaixo para a URL oficial do seu backend de produção ou localhost (ex: http://127.0.0.1:5000/generate)
         const API_URL = "https://gerador-backend-bice.vercel.app/generate";
         const containerInputs = document.getElementById('inputs-container');
         const spinner = document.getElementById('loading-spinner');
@@ -92,11 +98,12 @@
         function adicionarInput() {
             const totalInputs = containerInputs.querySelectorAll('.jogador-input').length + 1;
             const wrapper = document.createElement('div');
-            wrapper.className = 'flex gap-2 items-center animate-fade-in';
+            wrapper.className = 'flex gap-2 items-center';
             const novoInput = document.createElement('input');
             novoInput.type = 'text';
             novoInput.placeholder = `Jogador ${totalInputs}`;
             novoInput.className = 'jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none';
+            
             const btnDeletar = document.createElement('button');
             btnDeletar.type = 'button';
             btnDeletar.innerHTML = '✕';
@@ -105,6 +112,7 @@
                 wrapper.remove();
                 reorganizarPlaceholders();
             };
+            
             wrapper.appendChild(novoInput);
             wrapper.appendChild(btnDeletar);
             containerInputs.appendChild(wrapper);
@@ -123,11 +131,13 @@
             const jogadores = Array.from(inputs)
                 .map(i => i.value.trim())
                 .filter(valor => valor !== "");
+
             errorContainer.classList.add('hidden');
             resultadoContainer.classList.add('hidden');
             spinner.classList.remove('hidden');
             btnEnviar.disabled = true;
             btnEnviar.classList.add('opacity-75');
+
             try {
                 const response = await fetch(API_URL, {
                     method: 'POST',
@@ -137,13 +147,14 @@
                     body: JSON.stringify({ jogadores: jogadores })
                 });
                 const data = await response.json();
+                
                 if (data.status === "success") {
                     exibirEscalacao(data.dados_escalacao);
                 } else {
                     mostrarErro(data.message || "Ocorreu um erro ao processar a requisição.");
                 }
             } catch (error) {
-                mostrarErro("Não foi possível conectar à API. Verifique se o servidor está rodando ou se a URL está correta.");
+                mostrarErro("Não foi possível conectar à API. Verifique se o seu servidor backend está rodando localmente ou se o link do Vercel está correto.");
             } finally {
                 spinner.classList.add('hidden');
                 btnEnviar.disabled = false;
@@ -155,6 +166,8 @@
             document.getElementById('team-nome').innerText = escalacao.nome_do_time;
             document.getElementById('team-quantidade').innerText = escalacao.quantidade_de_jogadores;
             document.getElementById('team-qualidades').innerText = escalacao.qualidades_do_time;
+            
+            // 1. Renderiza os Titulares (Lista 1)
             const ulJogadores = document.getElementById('team-jogadores');
             ulJogadores.innerHTML = "";
             escalacao.jogadores.forEach(jog => {
@@ -162,6 +175,24 @@
                 li.innerText = jog;
                 ulJogadores.appendChild(li);
             });
+
+            // 2. Renderiza os Reservas / Sugeridos (Lista 2 separada)
+            const ulReservas = document.getElementById('team-reservas');
+            ulReservas.innerHTML = "";
+            if (escalacao.jogadores_reservas && escalacao.jogadores_reservas.length > 0) {
+                escalacao.jogadores_reservas.forEach(res => {
+                    const li = document.createElement('li');
+                    li.innerText = res;
+                    ulReservas.appendChild(li);
+                });
+            } else {
+                const li = document.createElement('li');
+                li.innerText = "Nenhum jogador reserva adicional foi sugerido pela IA.";
+                li.className = "italic text-gray-400 list-none";
+                ulReservas.appendChild(li);
+            }
+
+            // 3. Renderiza as Variações Táticas
             const ulVariabilidade = document.getElementById('team-variabilidade');
             ulVariabilidade.innerHTML = "";
             escalacao.variabilidade_do_time.forEach(varia => {
@@ -169,6 +200,7 @@
                 li.innerText = varia;
                 ulVariabilidade.appendChild(li);
             });
+
             resultadoContainer.classList.remove('hidden');
             resultadoContainer.scrollIntoView({ behavior: 'smooth' });
         }
@@ -183,7 +215,6 @@
                 <input type="text" placeholder="Jogador 1" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
                 <input type="text" placeholder="Jogador 2" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
                 <input type="text" placeholder="Jogador 3" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
-
                 <input type="text" placeholder="Jogador 4" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
                 <input type="text" placeholder="Jogador 5" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
                 <input type="text" placeholder="Jogador 6" required class="jogador-input w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-700 focus:outline-none">
