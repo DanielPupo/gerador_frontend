@@ -102,12 +102,12 @@ function exibirEscalacao(escalacao) {
         rowDiv.className = "flex justify-center w-full gap-2 sm:gap-6";
         
         jogadoresDaLinha.forEach(nomeCompleto => {
-            // Separação inteligente usando Regex para aceitar (, - ou –
-            const partes = nomeCompleto.split(/[(\-–|]/);
-            const nome = partes[0].trim();
-            const clube = partes[1] ? partes[1].replace(")", "").trim() : "Pro Club";
+            const match = nomeCompleto.match(/(.*?)\((.*?)\)/);
+            const nome = match ? match[1].trim() : nomeCompleto;
+            const clube = match ? match[2].trim() : "Pro Club";
 
             const dadosApiSports = dbJogadoresReais[nomeCompleto];
+            let layoutFotoHtml = `<div class="w-6 h-6 rounded-full bg-gray-800 text-[10px] mx-auto mb-0.5 flex items-center justify-center">👤</div>`;
             
             if (dadosApiSports && dadosApiSports.foto) {
                 layoutFotoHtml = `<img src="${dadosApiSports.foto}" class="w-7 h-7 rounded-full object-cover mx-auto mb-0.5 border border-lime-400/50">`;
@@ -132,21 +132,17 @@ function exibirEscalacao(escalacao) {
     construirLinhaDoCampo(linhasTaticas.defesa);
     construirLinhaDoCampo(linhasTaticas.goleiro);
 
-    // === ESTE É O BLOCO INTEIRO DOS RESERVAS ATUALIZADO ===
+    // Renderizando a lista de Reservas com suas respectivas fotos
     const ulReservas = document.getElementById('team-reservas');
     ulReservas.innerHTML = "";
-    
     if (escalacao.jogadores_reservas && escalacao.jogadores_reservas.length > 0) {
         escalacao.jogadores_reservas.forEach(res => {
-            // Separação inteligente usando Regex para aceitar (, - ou –
-            const partesRes = res.split(/[(\-–|]/);
-            const nomeRes = partesRes[0].trim();
-            const clubeRes = partesRes[1] ? partesRes[1].replace(")", "").trim() : "Suplente";
+            const matchRes = res.match(/(.*?)\((.*?)\)/);
+            const nomeRes = matchRes ? matchRes[1].trim() : res;
+            const clubeRes = matchRes ? matchRes[2].trim() : "Suplente";
 
             const dadosApiReserva = dbJogadoresReais[res];
             let fotoHtml = `<span class="text-lime-400 text-xs">▲</span>`;
-            
-            // Se a API encontrou a foto do reserva, coloca o elemento <img>
             if (dadosApiReserva && dadosApiReserva.foto) {
                 fotoHtml = `<img src="${dadosApiReserva.foto}" class="w-5 h-5 rounded-full inline-block border border-lime-400/40 object-cover">`;
             }
@@ -160,7 +156,20 @@ function exibirEscalacao(escalacao) {
     } else {
         ulReservas.innerHTML = `<li class="italic text-gray-600 text-xs">Nenhum suplente escalado.</li>`;
     }
-    // === FIM O BLOCO DOS RESERVAS ===
+
+    // Plano Tático Coletivo
+    const ulVariabilidade = document.getElementById('team-variabilidade');
+    ulVariabilidade.innerHTML = "";
+    escalacao.variabilidade_do_time.forEach(varia => {
+        const li = document.createElement('li');
+        li.className = "text-gray-400 text-sm pl-1";
+        li.innerText = varia;
+        ulVariabilidade.appendChild(li);
+    });
+
+    resultadoContainer.classList.remove('hidden');
+    resultadoContainer.scrollIntoView({ behavior: 'smooth' });
+}
 
 // Controle do Modal Detalhado (Card Estilo FIFA)
 function openPlayerModal(playerName, playerTeam, chaveCompleta) {
@@ -223,5 +232,4 @@ function reiniciarFormulario() {
     placeholderView.classList.remove('hidden');
     errorContainer.classList.add('hidden');
     closePlayerModal();
-}
 }
