@@ -3,86 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FC Tactical Generator | Gemini AI</title>
+    <title>FC Tactical Generator Pro | Gemini & API-Sports</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,800;1,700&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     
     <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-        .fifa-font {
-            font-family: 'Barlow Condensed', sans-serif;
-        }
-        /* Fundo estilo Menu do EA FC / FIFA */
-        .fifa-bg {
-            background: radial-gradient(circle at 50% 0%, #16192b 0%, #0b0c16 100%);
-        }
-        /* Linhas do campo de futebol tático */
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .fifa-font { font-family: 'Barlow Condensed', sans-serif; }
+        .fifa-bg { background: radial-gradient(circle at 50% 0%, #16192b 0%, #0b0c16 100%); }
         .soccer-field {
             background: radial-gradient(circle at center, #144026 0%, #0d2b19 100%);
             border: 2px solid rgba(255, 255, 255, 0.2);
             position: relative;
             overflow: hidden;
         }
-        .field-line {
-            position: absolute;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            pointer-events: none;
-        }
-        .center-circle {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-        .center-line {
-            width: 100%;
-            top: 50%;
-            left: 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.15);
-        }
-        .penalty-area-top {
-            width: 60%;
-            height: 70px;
-            top: 0;
-            left: 20%;
-            border-top: none;
-        }
-        .penalty-area-bot {
-            width: 60%;
-            height: 70px;
-            bottom: 0;
-            left: 20%;
-            border-bottom: none;
-        }
-
-        /* Animações */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in {
-            animation: fadeIn 0.4s ease-out forwards;
-        }
+        .field-line { position: absolute; border: 1px solid rgba(255, 255, 255, 0.15); pointer-events: none; }
+        .center-circle { width: 120px; height: 120px; border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .center-line { width: 100%; top: 50%; left: 0; border-top: 1px solid rgba(255, 255, 255, 0.15); }
+        .penalty-area-top { width: 60%; height: 70px; top: 0; left: 20%; }
+        .penalty-area-bot { width: 60%; height: 70px; bottom: 0; left: 20%; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
     </style>
 </head>
-<body class="fifa-bg text-gray-100 min-h-screen flex flex-col justify-between selection:bg-lime-400 selection:text-black">
+<body class="fifa-bg text-gray-100 min-h-screen flex flex-col justify-between">
     
     <div>
         <header class="border-b border-gray-800 bg-[#0e101d]/90 backdrop-blur sticky top-0 z-50">
             <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-2">
                 <div class="flex items-center gap-3">
-                    <span class="bg-lime-400 text-black text-xs font-black px-2 py-0.5 rounded italic fifa-font tracking-wider">GEMINI AI</span>
+                    <span class="bg-lime-400 text-black text-xs font-black px-2 py-0.5 rounded italic fifa-font tracking-wider">LIVE DATA API</span>
                     <h1 class="text-2xl font-black italic tracking-tight uppercase fifa-font text-white">
                         FC TACTICAL <span class="text-lime-400">GENERATOR</span>
                     </h1>
                 </div>
-                <p class="text-xs text-gray-400 font-medium tracking-wide uppercase">Matchday Squad Builder v1.6</p>
+                <p class="text-xs text-gray-400 font-medium tracking-wide uppercase">API-SPORTS CONNECTED v2.1</p>
             </div>
         </header>
 
@@ -96,18 +53,7 @@
                 
                 <form id="team-form" onsubmit="gerarEscalacao(event)">
                     <div id="inputs-container" class="space-y-2.5 max-h-[420px] overflow-y-auto pr-1">
-                        <input type="text" placeholder="Jogador 1" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:border-transparent focus:outline-none transition">
-                        <input type="text" placeholder="Jogador 2" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:border-transparent focus:outline-none transition">
-                        <input type="text" placeholder="Jogador 3" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:border-transparent focus:outline-none transition">
-                        <input type="text" placeholder="Jogador 4" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:border-transparent focus:outline-none transition">
-                        <input type="text" placeholder="Jogador 5" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:border-transparent focus:outline-none transition">
-                        <input type="text" placeholder="Jogador 6" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:border-transparent focus:outline-none transition">
-                        <input type="text" placeholder="Jogador 7" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:border-transparent focus:outline-none transition">
-                        <input type="text" placeholder="Jogador 8" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:border-transparent focus:outline-none transition">
-                        <input type="text" placeholder="Jogador 9" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:border-transparent focus:outline-none transition">
-                        <input type="text" placeholder="Jogador 10" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:border-transparent focus:outline-none transition">
-                        <input type="text" placeholder="Jogador 11" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:border-transparent focus:outline-none transition">
-                    </div>
+                        </div>
                     
                     <button type="button" onclick="adicionarInput()" class="mt-4 text-xs text-lime-400 hover:text-lime-300 font-bold uppercase tracking-wider flex items-center gap-1.5 transition">
                         ➕ ADICIONAR ATLETA EXTRA
@@ -126,21 +72,19 @@
             </div>
 
             <div class="lg:col-span-7 space-y-6 w-full relative">
-                
                 <div id="error-message" class="hidden p-4 bg-red-950/80 border border-red-800 text-red-300 rounded-xl text-sm"></div>
 
                 <div id="placeholder-view" class="bg-[#0e101d] border border-dashed border-gray-800 p-12 rounded-xl text-center flex flex-col items-center justify-center min-h-[400px]">
-                    <div class="w-16 h-16 bg-gray-900 border border-gray-800 rounded-full flex items-center justify-center mb-4 text-2xl text-gray-500 animate-pulse">⚽</div>
+                    <div class="w-16 h-16 bg-gray-900 border border-gray-800 rounded-full flex items-center justify-center mb-4 text-2xl text-lime-400 animate-pulse">⚽</div>
                     <h3 class="text-xl font-bold uppercase fifa-font tracking-wide text-gray-400">Aguardando Diretrizes Táticas</h3>
-                    <p class="text-gray-500 text-sm max-w-sm mt-1">Insira os nomes dos atletas na aba lateral e acione o painel para processar a escalação computadorizada.</p>
+                    <p class="text-gray-500 text-sm max-w-sm mt-1">Insira os atletas reais. Buscaremos fotos e estatísticas oficiais na API-Sports ao gerar.</p>
                 </div>
                 
                 <div id="resultado-container" class="hidden space-y-6 animate-fade-in relative z-10">
-                    
                     <div class="bg-gradient-to-r from-purple-900/30 via-[#0e101d] to-lime-950/20 border border-gray-800 p-5 rounded-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <div>
                             <h2 id="team-nome" class="text-3xl font-black italic uppercase tracking-tight text-white fifa-font"></h2>
-                            <p class="text-xs text-lime-400 font-bold uppercase tracking-widest mt-0.5">ELENCO PRINCIPAL CONFIRMADO</p>
+                            <p class="text-xs text-lime-400 font-bold uppercase tracking-widest mt-0.5">ELENCO CONECTADO À API-SPORTS</p>
                         </div>
                         <div class="bg-black/40 border border-gray-800 px-3 py-1.5 rounded-lg text-right">
                             <span class="text-[10px] text-gray-500 font-bold uppercase block">SUMÁRIO</span>
@@ -149,7 +93,7 @@
                     </div>
 
                     <div>
-                        <h3 class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-2.5 fifa-font">🟢 DISPOSIÇÃO TÁTICA EM CAMPO</h3>
+                        <h3 class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-2.5 fifa-font">🟢 CONFIGURAÇÃO TÁTICA DE JOGO</h3>
                         <div class="soccer-field rounded-xl w-full aspect-[4/5] sm:aspect-[4/3] min-h-[460px] shadow-2xl shadow-black/80">
                             <div class="field-line center-circle"></div>
                             <div class="field-line center-line"></div>
@@ -168,60 +112,61 @@
                         </div>
                         
                         <div class="bg-[#0e101d] border border-gray-800 p-5 rounded-xl">
-                            <h3 class="text-sm font-bold text-lime-400 uppercase tracking-wider mb-2.5 border-b border-gray-800 pb-1.5 fifa-font">🔄 BANCO DE RESERVAS E SUGERIDOS</h3>
-                            <ul id="team-reservas" class="text-sm text-gray-400 space-y-2 list-none">
-                                </ul>
+                            <h3 class="text-sm font-bold text-lime-400 uppercase tracking-wider mb-2.5 border-b border-gray-800 pb-1.5 fifa-font">🔄 BANCO DE RESERVAS</h3>
+                            <ul id="team-reservas" class="text-sm text-gray-400 space-y-2 list-none"></ul>
                         </div>
                     </div>
 
                     <div class="bg-[#0e101d] border border-gray-800 p-5 rounded-xl">
                         <h3 class="text-sm font-bold text-gray-300 uppercase tracking-wider mb-3 border-b border-gray-800 pb-1.5 fifa-font">📊 PLANO DE JOGO E ALTERNATIVAS</h3>
-                        <ul id="team-variabilidade" class="text-sm text-gray-400 space-y-2 list-disc pl-4 leading-relaxed">
-                            </ul>
+                        <ul id="team-variabilidade" class="text-sm text-gray-400 space-y-2 list-disc pl-4 leading-relaxed"></ul>
                     </div>
-
                 </div>
 
-                <div id="player-modal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+                <div id="player-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
                     <div class="animate-fade-in w-72 sm:w-80 bg-gradient-to-b from-[#1c1f36] to-[#0b0c16] border-4 border-lime-400 rounded-3xl p-6 shadow-2xl shadow-lime-500/20 relative">
                         <button onclick="closePlayerModal()" class="absolute top-4 right-4 text-gray-500 hover:text-white text-xl font-bold transition">✕</button>
                         
-                        <div class="flex items-center gap-3 mb-5 border-b border-gray-800 pb-4">
-                            <div class="w-16 h-16 rounded-full bg-gray-900 border-2 border-dashed border-gray-700 flex items-center justify-center text-3xl">👤</div>
-                            <div>
-                                <h4 id="modal-player-name" class="text-2xl font-black italic uppercase tracking-tighter text-white fifa-font truncate w-40 sm:w-48"></h4>
-                                <p id="modal-player-team" class="text-xs text-lime-400 font-bold uppercase tracking-widest truncate w-40 sm:w-48"></p>
+                        <div class="flex flex-col items-center mb-4">
+                            <div class="w-24 h-24 rounded-full border-4 border-gray-800 overflow-hidden bg-gray-900 shadow-inner flex items-center justify-center relative mb-3">
+                                <img id="modal-player-img" src="" alt="" class="w-full h-full object-cover hidden">
+                                <span id="modal-player-fallback" class="text-4xl">👤</span>
+                                <img id="modal-club-logo" src="" class="w-7 h-7 absolute bottom-0 right-0 bg-black/80 rounded-full p-1 border border-gray-800 hidden">
+                            </div>
+                            <div class="text-center">
+                                <h4 id="modal-player-name" class="text-2xl font-black italic uppercase tracking-tighter text-white fifa-font truncate max-w-[240px]"></h4>
+                                <p id="modal-player-team" class="text-xs text-lime-400 font-bold uppercase tracking-widest truncate max-w-[240px]"></p>
                             </div>
                         </div>
 
                         <div class="grid grid-cols-3 gap-3">
                             <div class="bg-gray-900/60 border border-gray-800 rounded-lg p-2.5 text-center">
-                                <span class="text-4xl font-black text-white fifa-font" id="stat-ovr"></span>
-                                <span class="text-[10px] text-gray-500 font-bold uppercase block -mt-1">GERAL</span>
+                                <span class="text-4xl font-black text-white fifa-font" id="stat-ovr">--</span>
+                                <span class="text-[10px] text-gray-500 font-bold uppercase block -mt-1">RATING</span>
                             </div>
                             <div class="bg-gray-900/60 border border-gray-800 rounded-lg p-2.5 text-center">
-                                <span class="text-2xl font-black text-lime-400 fifa-font" id="stat-pac"></span>
+                                <span class="text-2xl font-black text-lime-400 fifa-font" id="stat-pac">--</span>
                                 <span class="text-[10px] text-gray-500 font-bold uppercase block">RIT</span>
                             </div>
                             <div class="bg-gray-900/60 border border-gray-800 rounded-lg p-2.5 text-center">
-                                <span class="text-2xl font-black text-lime-400 fifa-font" id="stat-sho"></span>
+                                <span class="text-2xl font-black text-lime-400 fifa-font" id="stat-sho">--</span>
                                 <span class="text-[10px] text-gray-500 font-bold uppercase block">FIN</span>
                             </div>
-                            <div class="bg-gray-900/60 border border-gray-800 rounded-lg p-2.5 text-center col-span-1">
-                                <span class="text-xl font-black text-lime-400 fifa-font" id="stat-pas"></span>
+                            <div class="bg-gray-900/60 border border-gray-800 rounded-lg p-2.5 text-center">
+                                <span class="text-xl font-black text-lime-400 fifa-font" id="stat-pas">--</span>
                                 <span class="text-[10px] text-gray-500 font-bold uppercase block">PAS</span>
                             </div>
-                            <div class="bg-gray-900/60 border border-gray-800 rounded-lg p-2.5 text-center col-span-1">
-                                <span class="text-xl font-black text-lime-400 fifa-font" id="stat-dri"></span>
+                            <div class="bg-gray-900/60 border border-gray-800 rounded-lg p-2.5 text-center">
+                                <span class="text-xl font-black text-lime-400 fifa-font" id="stat-dri">--</span>
                                 <span class="text-[10px] text-gray-500 font-bold uppercase block">DRI</span>
                             </div>
-                            <div class="bg-gray-900/60 border border-gray-800 rounded-lg p-2.5 text-center col-span-1">
-                                <span class="text-xl font-black text-lime-400 fifa-font" id="stat-def"></span>
+                            <div class="bg-gray-900/60 border border-gray-800 rounded-lg p-2.5 text-center">
+                                <span class="text-xl font-black text-lime-400 fifa-font" id="stat-def">--</span>
                                 <span class="text-[10px] text-gray-500 font-bold uppercase block">DEF</span>
                             </div>
                         </div>
 
-                        <p class="text-[9px] text-gray-600 font-medium uppercase tracking-widest text-center mt-5">Atributos simulados - FC Tactical AI</p>
+                        <p class="text-[9px] text-gray-600 font-medium uppercase tracking-widest text-center mt-5">Dados Oficiais Fornecidos por API-Sports</p>
                     </div>
                 </div>
 
@@ -230,215 +175,9 @@
     </div>
 
     <footer class="border-t border-gray-900 bg-[#06070d] py-6 mt-16 text-center text-xs text-gray-600">
-        <div class="max-w-5xl mx-auto px-4 space-y-1">
-            <p class="font-bold uppercase tracking-widest text-gray-500 fifa-font">EA SPORTS GEMINI TACTICS SYSTEM</p>
-            <p class="opacity-75">Sistemas autônomos de IA estruturados em simulação estatística real.</p>
-        </div>
+        <p class="font-bold uppercase tracking-widest text-gray-500 fifa-font">EA SPORTS GEMINI TACTICS SYSTEM</p>
     </footer>
 
-    <script>
-        const API_URL = "https://gerador-backend-bice.vercel.app/generate";
-        const containerInputs = document.getElementById('inputs-container');
-        const spinner = document.getElementById('loading-spinner');
-        const btnEnviar = document.getElementById('btn-enviar');
-        const placeholderView = document.getElementById('placeholder-view');
-        const resultadoContainer = document.getElementById('resultado-container');
-        const errorContainer = document.getElementById('error-message');
-        const playerModal = document.getElementById('player-modal');
-
-        function adicionarInput() {
-            const totalInputs = containerInputs.querySelectorAll('.jogador-input').length + 1;
-            const wrapper = document.createElement('div');
-            wrapper.className = 'flex gap-2 items-center w-full';
-            
-            const novoInput = document.createElement('input');
-            novoInput.type = 'text';
-            novoInput.placeholder = `Jogador ${totalInputs}`;
-            novoInput.className = 'jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none transition';
-            
-            const btnDeletar = document.createElement('button');
-            btnDeletar.type = 'button';
-            btnDeletar.innerHTML = '✕';
-            btnDeletar.className = 'bg-red-950/60 hover:bg-red-900 text-red-400 border border-red-900/50 font-bold p-3 rounded-lg transition text-sm px-4';
-            btnDeletar.onclick = function() {
-                wrapper.remove();
-                reorganizarPlaceholders();
-            };
-            
-            wrapper.appendChild(novoInput);
-            wrapper.appendChild(btnDeletar);
-            containerInputs.appendChild(wrapper);
-        }
-
-        function reorganizarPlaceholders() {
-            const inputs = containerInputs.querySelectorAll('.jogador-input');
-            inputs.forEach((input, index) => {
-                input.placeholder = `Jogador ${index + 1}`;
-            });
-        }
-
-        async function gerarEscalacao(event) {
-            event.preventDefault();
-            const inputs = document.querySelectorAll('.jogador-input');
-            const jogadores = Array.from(inputs)
-                .map(i => i.value.trim())
-                .filter(valor => valor !== "");
-
-            errorContainer.classList.add('hidden');
-            spinner.classList.remove('hidden');
-            btnEnviar.disabled = true;
-            btnEnviar.classList.add('opacity-75');
-
-            try {
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ jogadores: jogadores })
-                });
-                const data = await response.json();
-                
-                if (data.status === "success") {
-                    placeholderView.classList.add('hidden');
-                    exibirEscalacao(data.dados_escalacao);
-                } else {
-                    mostrarErro(data.message || "Erro interno de rede.");
-                }
-            } catch (error) {
-                mostrarErro("Falha crítica ao conectar com o barramento do backend táctico.");
-            } finally {
-                spinner.classList.add('hidden');
-                btnEnviar.disabled = false;
-                btnEnviar.classList.remove('opacity-75');
-            }
-        }
-
-        function exibirEscalacao(escalacao) {
-            document.getElementById('team-nome').innerText = escalacao.nome_do_time;
-            document.getElementById('team-quantidade').innerText = escalacao.quantidade_de_jogadores;
-            document.getElementById('team-qualidades').innerText = escalacao.qualidades_do_time;
-            
-            // 1. DISTRIBUIÇÃO E CONSTRUÇÃO DO CAMPINHO (11 Titulares)
-            const gridCampo = document.getElementById('field-players-grid');
-            gridCampo.innerHTML = ""; // Limpa campo anterior
-
-            const linhasTaticas = { ataque: [], meio: [], defesa: [], goleiro: [] };
-            
-            escalacao.jogadores.forEach((player, idx) => {
-                if(idx === 0) linhasTaticas.goleiro.push(player);
-                else if(idx >= 1 && idx <= 4) linhasTaticas.defesa.push(player);
-                else if(idx >= 5 && idx <= 8) linhasTaticas.meio.push(player);
-                else linhasTaticas.ataque.push(player);
-            });
-
-            // Função auxiliar para gerar fileiras horizontais de jogadores
-            const construirLinhaDoCampo = (jogadoresDaLinha) => {
-                const rowDiv = document.createElement('div');
-                rowDiv.className = "flex justify-center w-full gap-2 sm:gap-6";
-                jogadoresDaLinha.forEach(nomeCompleto => {
-                    const match = nomeCompleto.match(/(.*?)\((.*?)\)/);
-                    const nome = match ? match[1].trim() : nomeCompleto;
-                    const clube = match ? match[2].trim() : "Pro Club";
-
-                    const playerCard = document.createElement('div');
-                    // NOVO: Adicionado cursor-pointer e onclick para abrir o modal
-                    playerCard.className = "bg-black/70 border border-lime-400/30 rounded px-1.5 py-1 text-center w-20 sm:w-24 shadow-lg backdrop-blur-sm transform hover:scale-110 transition duration-150 cursor-pointer";
-                    playerCard.onclick = () => openPlayerModal(nome, clube);
-                    playerCard.innerHTML = `
-                        <div class="text-[9px] sm:text-xs font-black truncate text-white uppercase tracking-tight">${nome}</div>
-                        <div class="text-[7px] sm:text-[9px] text-lime-400 font-semibold truncate uppercase tracking-widest">${clube}</div>
-                    `;
-                    rowDiv.appendChild(playerCard);
-                });
-                gridCampo.appendChild(rowDiv);
-            };
-
-            // Insere de cima pra baixo (Ataque -> Meio -> Defesa -> Goleiro)
-            construirLinhaDoCampo(linhasTaticas.ataque);
-            construirLinhaDoCampo(linhasTaticas.meio);
-            construirLinhaDoCampo(linhasTaticas.defesa);
-            construirLinhaDoCampo(linhasTaticas.goleiro);
-
-            // 2. RENDERIZAÇÃO DOS RESERVAS E SUGERIDOS
-            const ulReservas = document.getElementById('team-reservas');
-            ulReservas.innerHTML = "";
-            if (escalacao.jogadores_reservas && escalacao.jogadores_reservas.length > 0) {
-                escalacao.jogadores_reservas.forEach(res => {
-                    const li = document.createElement('li');
-                    li.className = "flex items-center gap-2 border-b border-gray-900 pb-1.5 text-gray-300";
-                    li.innerHTML = `<span class="text-lime-400 text-xs">▲</span> <span>${res}</span>`;
-                    ulReservas.appendChild(li);
-                });
-            } else {
-                ulReservas.innerHTML = `<li class="italic text-gray-600 text-xs">Nenhum suplente foi requisitado ao banco.</li>`;
-            }
-
-            // 3. VARIABILIDADE E DINÂMICA DE JOGO
-            const ulVariabilidade = document.getElementById('team-variabilidade');
-            ulVariabilidade.innerHTML = "";
-            escalacao.variabilidade_do_time.forEach(varia => {
-                const li = document.createElement('li');
-                li.className = "text-gray-400 text-sm pl-1";
-                li.innerText = varia;
-                ulVariabilidade.appendChild(li);
-            });
-
-            resultadoContainer.classList.remove('hidden');
-            resultadoContainer.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // FUNÇÕES DO MODAL (CARD) - NOVO
-        function openPlayerModal(playerName, playerTeam) {
-            document.getElementById('modal-player-name').innerText = playerName;
-            document.getElementById('modal-player-team').innerText = playerTeam;
-            
-            // Simula estatísticas aleatórias (75-98) - Já que não temos esses dados na API
-            const ovr = Math.floor(Math.random() * (98 - 85 + 1)) + 85;
-            document.getElementById('stat-ovr').innerText = ovr;
-            document.getElementById('stat-pac').innerText = Math.floor(Math.random() * (ovr - 75 + 1)) + 75;
-            document.getElementById('stat-sho').innerText = Math.floor(Math.random() * (ovr - 75 + 1)) + 75;
-            document.getElementById('stat-pas').innerText = Math.floor(Math.random() * (ovr - 75 + 1)) + 75;
-            document.getElementById('stat-dri').innerText = Math.floor(Math.random() * (ovr - 75 + 1)) + 75;
-            document.getElementById('stat-def').innerText = Math.floor(Math.random() * (ovr - 60 + 1)) + 60; // Goleiros/Zagueiros variam mais
-
-            playerModal.classList.remove('hidden');
-        }
-
-        function closePlayerModal() {
-            playerModal.classList.add('hidden');
-        }
-
-        // Fecha o modal ao clicar fora do card
-        playerModal.addEventListener('click', function(e) {
-            if (e.target === playerModal) {
-                closePlayerModal();
-            }
-        });
-
-        function mostrarErro(mensagem) {
-            errorContainer.innerText = mensagem;
-            errorContainer.classList.remove('hidden');
-            resultadoContainer.classList.add('hidden');
-        }
-
-        function reiniciarFormulario() {
-            containerInputs.innerHTML = `
-                <input type="text" placeholder="Jogador 1" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none transition">
-                <input type="text" placeholder="Jogador 2" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none transition">
-                <input type="text" placeholder="Jogador 3" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none transition">
-                <input type="text" placeholder="Jogador 4" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none transition">
-                <input type="text" placeholder="Jogador 5" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none transition">
-                <input type="text" placeholder="Jogador 6" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none transition">
-                <input type="text" placeholder="Jogador 7" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none transition">
-                <input type="text" placeholder="Jogador 8" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none transition">
-                <input type="text" placeholder="Jogador 9" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none transition">
-                <input type="text" placeholder="Jogador 10" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none transition">
-                <input type="text" placeholder="Jogador 11" required class="jogador-input w-full bg-[#16192b] text-white placeholder-gray-500 text-sm p-3 border border-gray-800 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none transition">
-            `;
-            resultadoContainer.classList.add('hidden');
-            placeholderView.classList.remove('hidden');
-            errorContainer.classList.add('hidden');
-            closePlayerModal(); // Garante que o modal fecha no reset
-        }
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
