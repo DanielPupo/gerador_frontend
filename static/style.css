@@ -1,0 +1,104 @@
+
+
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.fifa-font {
+    font-family: 'Barlow Condensed', sans-serif;
+}
+
+.fifa-bg {
+    background: radial-gradient(circle at 50% 0%, #16192b 0%, #0b0c16 100%);
+}
+
+.soccer-field {
+    background: radial-gradient(circle at center, #144026 0%, #0d2b19 100%);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.field-line {
+    position: absolute;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    pointer-events: none;
+}
+
+.center-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.center-line {
+    width: 100%;
+    top: 50%;
+    left: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.penalty-area-top {
+    width: 60%;
+    height: 70px;
+    top: 0;
+    left: 20%;
+}
+
+.penalty-area-bot {
+    width: 60%;
+    height: 70px;
+    bottom: 0;
+    left: 20%;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+* Estilo do Card do FIFA */ .fifa-card-gold {
+    background: linear-gradient(135deg, #ffe066 0%, #f5af19 50%, #e65c00 100%);
+    clip-path: polygon(0% 15%, 15% 0%, 85% 0%, 100% 15%, 100% 85%, 50% 100%, 0% 85%);
+    border: 2px solid #fff3cc;
+}
+
+.fifa-card-totw {
+    background: linear-gradient(135deg, #111111 0%, #333333 50%, #000000 100%);
+    clip-path: polygon(0% 15%, 15% 0%, 85% 0%, 100% 15%, 100% 85%, 50% 100%, 0% 85%);
+    border: 2px solid #ff0055;
+}
+
+/* Animação de abertura de pacotes ao renderizar */
+.pack-open-anim {
+    animation: packGlow 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes packGlow {
+    0% {
+        transform: scale(0.5);
+        filter: brightness(3) blur(10px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        filter: brightness(1) blur(0);
+        opacity: 1;
+    }
+}

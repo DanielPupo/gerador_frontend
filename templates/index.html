@@ -8,25 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,800;1,700&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/styles.css">
     
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .fifa-font { font-family: 'Barlow Condensed', sans-serif; }
-        .fifa-bg { background: radial-gradient(circle at 50% 0%, #16192b 0%, #0b0c16 100%); }
-        .soccer-field {
-            background: radial-gradient(circle at center, #144026 0%, #0d2b19 100%);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
-        .field-line { position: absolute; border: 1px solid rgba(255, 255, 255, 0.15); pointer-events: none; }
-        .center-circle { width: 120px; height: 120px; border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); }
-        .center-line { width: 100%; top: 50%; left: 0; border-top: 1px solid rgba(255, 255, 255, 0.15); }
-        .penalty-area-top { width: 60%; height: 70px; top: 0; left: 20%; }
-        .penalty-area-bot { width: 60%; height: 70px; bottom: 0; left: 20%; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
-    </style>
 </head>
 <body class="fifa-bg text-gray-100 min-h-screen flex flex-col justify-between">
     

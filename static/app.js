@@ -1,7 +1,7 @@
 // app.js
 
 // Altere para a URL correta de produção ou deixe localhost se estiver testando localmente
-const API_URL = "https://gerador-backend-bice.vercel.app/";
+const API_URL = "https://gerador-backend-bice.vercel.app/generate";
 
 const containerInputs = document.getElementById('inputs-container');
 const spinner = document.getElementById('loading-spinner');
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function carregarInputsIniciais() {
     containerInputs.innerHTML = "";
-    for(let i = 1; i <= 11; i++) {
+    for (let i = 1; i <= 11; i++) {
         const input = document.createElement('input');
         input.type = 'text';
         input.placeholder = `Jogador ${i}`;
@@ -63,7 +63,7 @@ async function gerarEscalacao(event) {
             body: JSON.stringify({ jogadores: jogadores })
         });
         const data = await response.json();
-        
+
         if (data.status === "success") {
             placeholderView.classList.add('hidden');
             // Armazena o mapeamento de fotos/stats retornado pelo backend
@@ -84,23 +84,23 @@ function exibirEscalacao(escalacao) {
     document.getElementById('team-nome').innerText = escalacao.nome_do_time;
     document.getElementById('team-quantidade').innerText = escalacao.quantidade_de_jogadores;
     document.getElementById('team-qualidades').innerText = escalacao.qualidades_do_time;
-    
+
     const gridCampo = document.getElementById('field-players-grid');
-    gridCampo.innerHTML = ""; 
+    gridCampo.innerHTML = "";
 
     // Distribuição tática das linhas do campinho visual
     const linhasTaticas = { ataque: [], meio: [], defesa: [], goleiro: [] };
     escalacao.jogadores.forEach((player, idx) => {
-        if(idx === 0) linhasTaticas.goleiro.push(player);
-        else if(idx >= 1 && idx <= 4) linhasTaticas.defesa.push(player);
-        else if(idx >= 5 && idx <= 8) linhasTaticas.meio.push(player);
+        if (idx === 0) linhasTaticas.goleiro.push(player);
+        else if (idx >= 1 && idx <= 4) linhasTaticas.defesa.push(player);
+        else if (idx >= 5 && idx <= 8) linhasTaticas.meio.push(player);
         else linhasTaticas.ataque.push(player);
     });
 
     const construirLinhaDoCampo = (jogadoresDaLinha) => {
         const rowDiv = document.createElement('div');
         rowDiv.className = "flex justify-center w-full gap-2 sm:gap-6";
-        
+
         jogadoresDaLinha.forEach(nomeCompleto => {
             const match = nomeCompleto.match(/(.*?)\((.*?)\)/);
             const nome = match ? match[1].trim() : nomeCompleto;
@@ -108,18 +108,22 @@ function exibirEscalacao(escalacao) {
 
             const dadosApiSports = dbJogadoresReais[nomeCompleto];
             let layoutFotoHtml = `<div class="w-6 h-6 rounded-full bg-gray-800 text-[10px] mx-auto mb-0.5 flex items-center justify-center">👤</div>`;
-            
+
             if (dadosApiSports && dadosApiSports.foto) {
                 layoutFotoHtml = `<img src="${dadosApiSports.foto}" class="w-7 h-7 rounded-full object-cover mx-auto mb-0.5 border border-lime-400/50">`;
             }
 
-            const playerCard = document.createElement('div');
-            playerCard.className = "bg-black/80 border border-lime-400/30 rounded-lg p-1 text-center w-20 sm:w-24 shadow-lg backdrop-blur-sm transform hover:scale-110 transition cursor-pointer";
-            playerCard.onclick = () => openPlayerModal(nome, clube, nomeCompleto);
+            // Exemplo de como gerar o card estilizado dentro do loop do seu app.js:
+            const classeCard = (idx === 0 || idx === 10) ? 'fifa-card-totw' : 'fifa-card-gold'; // Alterna tipos de carta
+
+            playerCard.className = `${classeCard} pack-open-anim text-center w-24 sm:w-28 p-2 shadow-2xl relative cursor-pointer text-black font-bold`;
             playerCard.innerHTML = `
-                ${layoutFotoHtml}
-                <div class="text-[9px] sm:text-[11px] font-black truncate text-white uppercase tracking-tight">${nome}</div>
-                <div class="text-[7px] sm:text-[8px] text-lime-400 font-semibold truncate uppercase tracking-widest">${clube}</div>
+                <div class="absolute top-1 left-2 text-[10px] font-black">${dadosApiSports?.stats?.ovr || 82}</div>
+                <div class="absolute top-4 left-2 text-[8px] font-extrabold text-gray-800">${playerObj.posicao_campo}</div>
+                <div class="mt-2">${layoutFotoHtml}</div>
+                <div class="text-[10px] font-black uppercase truncate tracking-tight mt-1 text-black">${nome}</div>
+                <div class="text-[7px] text-amber-950 font-bold truncate max-w-[90%] mx-auto">${clube}</div>
+                <div class="text-[7px] bg-black/20 rounded px-1 mt-1 inline-block text-black">🔥 ${playerObj.playstyle_plus}</div>
             `;
             rowDiv.appendChild(playerCard);
         });
@@ -146,7 +150,7 @@ function exibirEscalacao(escalacao) {
             if (dadosApiReserva && dadosApiReserva.foto) {
                 fotoHtml = `<img src="${dadosApiReserva.foto}" class="w-5 h-5 rounded-full inline-block border border-lime-400/40 object-cover">`;
             }
-            
+
             const li = document.createElement('li');
             li.className = "flex items-center gap-2 border-b border-gray-900 pb-1.5 text-gray-300 hover:text-white cursor-pointer transition";
             li.onclick = () => openPlayerModal(nomeRes, clubeRes, res);
@@ -175,11 +179,11 @@ function exibirEscalacao(escalacao) {
 function openPlayerModal(playerName, playerTeam, chaveCompleta) {
     document.getElementById('modal-player-name').innerText = playerName;
     document.getElementById('modal-player-team').innerText = playerTeam;
-    
+
     const imgTag = document.getElementById('modal-player-img');
     const fallbackTag = document.getElementById('modal-player-fallback');
     const clubLogoTag = document.getElementById('modal-club-logo');
-    
+
     const dadosFutebol = dbJogadoresReais[chaveCompleta];
 
     if (dadosFutebol) {
@@ -187,7 +191,7 @@ function openPlayerModal(playerName, playerTeam, chaveCompleta) {
         imgTag.classList.remove('hidden');
         fallbackTag.classList.add('hidden');
 
-        if(dadosFutebol.logo_clube) {
+        if (dadosFutebol.logo_clube) {
             clubLogoTag.src = dadosFutebol.logo_clube;
             clubLogoTag.classList.remove('hidden');
         } else {
@@ -204,7 +208,7 @@ function openPlayerModal(playerName, playerTeam, chaveCompleta) {
         imgTag.classList.add('hidden');
         clubLogoTag.classList.add('hidden');
         fallbackTag.classList.remove('hidden');
-        
+
         document.getElementById('stat-ovr').innerText = "--";
         document.getElementById('stat-pac').innerText = "--";
         document.getElementById('stat-sho').innerText = "--";
@@ -217,7 +221,7 @@ function openPlayerModal(playerName, playerTeam, chaveCompleta) {
 }
 
 function closePlayerModal() { playerModal.classList.add('hidden'); }
-playerModal.addEventListener('click', function(e) { if (e.target === playerModal) closePlayerModal(); });
+playerModal.addEventListener('click', function (e) { if (e.target === playerModal) closePlayerModal(); });
 
 function mostrarErro(mensagem) {
     errorContainer.innerText = mensagem;
