@@ -1,5 +1,5 @@
-// URL de produção apontando cirurgicamente para o endpoint de geração
-const API_URL = "https://gerador-backend-bice.vercel.app/generate";
+// URL local do backend para testes rápidos
+const API_URL = "http://127.0.0.1:5000/generate";
 
 document.getElementById('teamForm').addEventListener('submit', async (e) => {
     e.preventDefault();
