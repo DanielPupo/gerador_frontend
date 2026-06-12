@@ -24,12 +24,17 @@ document.getElementById('teamForm').addEventListener('submit', async (e) => {
             body: JSON.stringify({ prompt: promptInput })
         });
 
+        const data = await response.json();
+
         if (!response.ok) {
-            throw new Error(`Erro no servidor: Código ${response.status}`);
+            throw new Error(data.message || `Erro no servidor: Código ${response.status}`);
         }
 
-        const data = await response.json();
-        renderSquad(data);
+        if (data.status === 'error') {
+            throw new Error(data.message || 'Erro desconhecido do servidor.');
+        }
+
+        renderSquad(data.dados_escalacao || data);
 
     } catch (err) {
         console.error(err);
