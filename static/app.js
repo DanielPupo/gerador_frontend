@@ -1,7 +1,7 @@
 // app.js
 
 // Altere para a URL correta de produção ou deixe localhost se estiver testando localmente
-const API_URL = "http://127.0.0.1:5000/generate";
+const API_URL = "https://gerador-backend-bice.vercel.app/";
 
 const containerInputs = document.getElementById('inputs-container');
 const spinner = document.getElementById('loading-spinner');
