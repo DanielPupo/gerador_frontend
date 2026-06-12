@@ -3,161 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FC Tactical Generator Pro | Gemini & API-Sports</title>
+    <title>FC Ultimate Team - Tactical Generator Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,800;1,700&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">    
 </head>
 <body class="fifa-bg text-gray-100 min-h-screen flex flex-col justify-between">
     
     <div>
-        <header class="border-b border-gray-800 bg-[#0e101d]/90 backdrop-blur sticky top-0 z-50">
-            <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-2">
+        <header class="border-b border-gray-800 bg-[#0e101d]/90 backdrop-blur sticky top-0 z-50 shadow-lg">
+            <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
                 <div class="flex items-center gap-3">
-                    <span class="bg-lime-400 text-black text-xs font-black px-2 py-0.5 rounded italic fifa-font tracking-wider">LIVE DATA API</span>
-                    <h1 class="text-2xl font-black italic tracking-tight uppercase fifa-font text-white">
-                        FC TACTICAL <span class="text-lime-400">GENERATOR</span>
-                    </h1>
+                    <span class="bg-amber-400 text-black text-xs font-black px-2 py-1 rounded font-mono">EA SPORTS FC</span>
+                    <h1 class="text-xl font-black tracking-tight text-white uppercase">AI Tactical Generator</h1>
                 </div>
-                <p class="text-xs text-gray-400 font-medium tracking-wide uppercase">API-SPORTS CONNECTED v2.1</p>
+                <button onclick="reiniciarFormulario()" class="text-xs font-bold text-gray-400 hover:text-amber-400 transition uppercase tracking-wider cursor-pointer">
+                    🔄 Reiniciar Painel
+                </button>
             </div>
         </header>
 
-        <main class="max-w-5xl mx-auto p-4 mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <main class="max-w-5xl mx-auto px-4 mt-8">
             
-            <div class="lg:col-span-5 bg-[#0e101d] border border-gray-800 p-6 rounded-xl shadow-2xl">
-                <div class="flex items-center justify-between mb-4 border-b border-gray-800 pb-3">
-                    <h2 class="text-lg font-bold uppercase tracking-wide fifa-font text-gray-300">📋 Inscrição do Elenco</h2>
-                    <span class="text-xs bg-gray-800 text-gray-400 font-bold px-2 py-1 rounded">Min 11</span>
+            <section class="bg-[#121424] border border-gray-800 rounded-xl p-6 shadow-2xl">
+                <div class="mb-4">
+                    <h2 class="text-lg font-bold text-white uppercase tracking-wide">Construção do Esquadrão</h2>
+                    <p class="text-xs text-gray-400">Insira a sua ideia ou comando tático para a Inteligência Artificial processar seu Pack.</p>
                 </div>
-                
-                <form id="team-form" onsubmit="gerarEscalacao(event)">
-                    <div id="inputs-container" class="space-y-2.5 max-h-[420px] overflow-y-auto pr-1">
-                        </div>
-                    
-                    <button type="button" onclick="adicionarInput()" class="mt-4 text-xs text-lime-400 hover:text-lime-300 font-bold uppercase tracking-wider flex items-center gap-1.5 transition">
-                        ➕ ADICIONAR ATLETA EXTRA
-                    </button>
 
-                    <div class="mt-6 flex gap-3">
-                        <button type="submit" id="btn-enviar" class="flex-1 bg-gradient-to-r from-lime-500 to-green-600 hover:from-lime-400 hover:to-green-500 text-black font-black uppercase tracking-wider py-3.5 px-4 rounded-xl transition duration-300 flex justify-center items-center gap-2 text-sm shadow-lg shadow-lime-500/10">
-                            <span>SUBMETER ESTRATÉGIA</span>
-                            <div id="loading-spinner" class="hidden w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
-                        </button>
-                        <button type="button" onclick="reiniciarFormulario()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 font-bold uppercase tracking-wider py-3.5 px-5 rounded-xl transition text-xs">
-                            RESET
-                        </button>
+                <form id="teamForm" class="space-y-4">
+                    <div class="space-y-2">
+                        <label for="promptInput" class="text-xs font-bold uppercase tracking-wider text-gray-400">Instruções Táticas Específicas:</label>
+                        <textarea 
+                            id="promptInput" 
+                            rows="3" 
+                            required
+                            class="w-full bg-[#090a10] text-white placeholder-gray-600 text-sm p-4 border border-gray-800 rounded-lg focus:ring-2 focus:ring-amber-400 focus:outline-none transition resize-none"
+                            placeholder="Ex: Monte um esquadrão focado no Real Madrid atual, no esquema 4-2-3-1, priorizando jogadas de velocidade pelos lados com Vini Jr e Mbappé..."
+                        ></textarea>
                     </div>
+
+                    <button 
+                        type="submit" 
+                        id="btn-enviar"
+                        class="w-full bg-amber-400 hover:bg-amber-300 text-black font-black text-sm uppercase py-4 rounded-lg transition tracking-wider cursor-pointer shadow-lg block text-center"
+                    >
+                        Gerar Elenco e Táticas Premium
+                    </button>
                 </form>
+            </section>
+
+            <div id="loading" class="hidden my-12 text-center">
+                <div class="inline-block animate-spin rounded-full h-10 w-10 border-4 border-amber-400 border-t-transparent mb-3"></div>
+                <p class="text-xs text-amber-400 font-black tracking-widest uppercase animate-pulse">Analisando Mercado e Gerando Cards...</p>
             </div>
 
-            <div class="lg:col-span-7 space-y-6 w-full relative">
-                <div id="error-message" class="hidden p-4 bg-red-950/80 border border-red-800 text-red-300 rounded-xl text-sm"></div>
+            <div id="errorCard" class="hidden bg-red-950/40 border border-red-800/60 rounded-xl p-4 my-6 text-center animate-fade-in">
+                <p id="errorMessage" class="text-red-400 text-xs font-semibold"></p>
+            </div>
 
-                <div id="placeholder-view" class="bg-[#0e101d] border border-dashed border-gray-800 p-12 rounded-xl text-center flex flex-col items-center justify-center min-h-[400px]">
-                    <div class="w-16 h-16 bg-gray-900 border border-gray-800 rounded-full flex items-center justify-center mb-4 text-2xl text-lime-400 animate-pulse">⚽</div>
-                    <h3 class="text-xl font-bold uppercase fifa-font tracking-wide text-gray-400">Aguardando Diretrizes Táticas</h3>
-                    <p class="text-gray-500 text-sm max-w-sm mt-1">Insira os atletas reais. Buscaremos fotos e estatísticas oficiais na API-Sports ao gerar.</p>
-                </div>
-                
-                <div id="resultado-container" class="hidden space-y-6 animate-fade-in relative z-10">
-                    <div class="bg-gradient-to-r from-purple-900/30 via-[#0e101d] to-lime-950/20 border border-gray-800 p-5 rounded-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <section id="resultContainer" class="hidden mt-8 space-y-6 animate-fade-in">
+                <div class="bg-[#121424] border border-gray-800 rounded-xl p-6 shadow-2xl">
+                    
+                    <div class="border-b border-gray-800 pb-4 mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                         <div>
-                            <h2 id="team-nome" class="text-3xl font-black italic uppercase tracking-tight text-white fifa-font"></h2>
-                            <p class="text-xs text-lime-400 font-bold uppercase tracking-widest mt-0.5">ELENCO CONECTADO À API-SPORTS</p>
+                            <h3 id="teamNameDisplay" class="text-xl font-black text-amber-400 uppercase tracking-tight"></h3>
+                            <p id="tacticalDisplay" class="text-gray-400 text-xs mt-0.5"></p>
                         </div>
-                        <div class="bg-black/40 border border-gray-800 px-3 py-1.5 rounded-lg text-right">
-                            <span class="text-[10px] text-gray-500 font-bold uppercase block">SUMÁRIO</span>
-                            <span id="team-quantidade" class="text-xs font-bold text-gray-300"></span>
-                        </div>
+                        <span id="chemistryDisplay" class="bg-[#090a10] text-amber-400 border border-amber-400/20 px-4 py-1.5 rounded-full text-xs font-black tracking-wide"></span>
                     </div>
 
-                    <div>
-                        <h3 class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-2.5 fifa-font">🟢 CONFIGURAÇÃO TÁTICA DE JOGO</h3>
-                        <div class="soccer-field rounded-xl w-full aspect-[4/5] sm:aspect-[4/3] min-h-[460px] shadow-2xl shadow-black/80">
-                            <div class="field-line center-circle"></div>
-                            <div class="field-line center-line"></div>
-                            <div class="field-line penalty-area-top"></div>
-                            <div class="field-line penalty-area-bot"></div>
-                            
-                            <div id="field-players-grid" class="absolute inset-0 p-4 grid grid-rows-4 justify-items-center items-center z-10">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        
+                        <div class="lg:col-span-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-gray-400 block mb-3">Onze Titular Ideal</span>
+                            <div id="tacticalPitch" class="soccer-field rounded-xl p-6 flex flex-wrap gap-4 justify-center items-center">
+                                <div class="field-line center-circle"></div>
+                                <div class="field-line center-line"></div>
+                                <div class="field-line penalty-area-top"></div>
+                                <div class="field-line penalty-area-bot"></div>
+                                
                                 </div>
                         </div>
+
+                        <div class="space-y-6">
+                            
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-gray-400 block mb-3">Banco de Reservas (Substitutos)</span>
+                                <ul id="benchContainer" class="space-y-2 max-h-[220px] overflow-y-auto pr-1">
+                                    </ul>
+                            </div>
+
+                            <div class="bg-[#090a10] border border-gray-800 rounded-xl p-4 shadow-inner">
+                                <span class="text-xs font-black uppercase tracking-wider text-amber-400 block mb-3">📋 Instruções de Jogador</span>
+                                <ul id="instructionsList" class="space-y-2.5">
+                                    </ul>
+                            </div>
+
+                        </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="bg-[#0e101d] border border-gray-800 p-5 rounded-xl">
-                            <h3 class="text-sm font-bold text-lime-400 uppercase tracking-wider mb-2.5 border-b border-gray-800 pb-1.5 fifa-font">⚡ ATRIBUTOS COLETIVOS</h3>
-                            <p id="team-qualidades" class="text-sm text-gray-400 leading-relaxed"></p>
-                        </div>
-                        
-                        <div class="bg-[#0e101d] border border-gray-800 p-5 rounded-xl">
-                            <h3 class="text-sm font-bold text-lime-400 uppercase tracking-wider mb-2.5 border-b border-gray-800 pb-1.5 fifa-font">🔄 BANCO DE RESERVAS</h3>
-                            <ul id="team-reservas" class="text-sm text-gray-400 space-y-2 list-none"></ul>
-                        </div>
-                    </div>
-
-                    <div class="bg-[#0e101d] border border-gray-800 p-5 rounded-xl">
-                        <h3 class="text-sm font-bold text-gray-300 uppercase tracking-wider mb-3 border-b border-gray-800 pb-1.5 fifa-font">📊 PLANO DE JOGO E ALTERNATIVAS</h3>
-                        <ul id="team-variabilidade" class="text-sm text-gray-400 space-y-2 list-disc pl-4 leading-relaxed"></ul>
-                    </div>
                 </div>
-
-                <div id="player-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
-                    <div class="animate-fade-in w-72 sm:w-80 bg-gradient-to-b from-[#1c1f36] to-[#0b0c16] border-4 border-lime-400 rounded-3xl p-6 shadow-2xl shadow-lime-500/20 relative">
-                        <button onclick="closePlayerModal()" class="absolute top-4 right-4 text-gray-500 hover:text-white text-xl font-bold transition">✕</button>
-                        
-                        <div class="flex flex-col items-center mb-4">
-                            <div class="w-24 h-24 rounded-full border-4 border-gray-800 overflow-hidden bg-gray-900 shadow-inner flex items-center justify-center relative mb-3">
-                                <img id="modal-player-img" src="" alt="" class="w-full h-full object-cover hidden">
-                                <span id="modal-player-fallback" class="text-4xl">👤</span>
-                                <img id="modal-club-logo" src="" class="w-7 h-7 absolute bottom-0 right-0 bg-black/80 rounded-full p-1 border border-gray-800 hidden">
-                            </div>
-                            <div class="text-center">
-                                <h4 id="modal-player-name" class="text-2xl font-black italic uppercase tracking-tighter text-white fifa-font truncate max-w-[240px]"></h4>
-                                <p id="modal-player-team" class="text-xs text-lime-400 font-bold uppercase tracking-widest truncate max-w-[240px]"></p>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-3 gap-3">
-                            <div class="bg-gray-900/60 border border-gray-800 rounded-lg p-2.5 text-center">
-                                <span class="text-4xl font-black text-white fifa-font" id="stat-ovr">--</span>
-                                <span class="text-[10px] text-gray-500 font-bold uppercase block -mt-1">RATING</span>
-                            </div>
-                            <div class="bg-gray-900/60 border border-gray-800 rounded-lg p-2.5 text-center">
-                                <span class="text-2xl font-black text-lime-400 fifa-font" id="stat-pac">--</span>
-                                <span class="text-[10px] text-gray-500 font-bold uppercase block">RIT</span>
-                            </div>
-                            <div class="bg-gray-900/60 border border-gray-800 rounded-lg p-2.5 text-center">
-                                <span class="text-2xl font-black text-lime-400 fifa-font" id="stat-sho">--</span>
-                                <span class="text-[10px] text-gray-500 font-bold uppercase block">FIN</span>
-                            </div>
-                            <div class="bg-gray-900/60 border border-gray-800 rounded-lg p-2.5 text-center">
-                                <span class="text-xl font-black text-lime-400 fifa-font" id="stat-pas">--</span>
-                                <span class="text-[10px] text-gray-500 font-bold uppercase block">PAS</span>
-                            </div>
-                            <div class="bg-gray-900/60 border border-gray-800 rounded-lg p-2.5 text-center">
-                                <span class="text-xl font-black text-lime-400 fifa-font" id="stat-dri">--</span>
-                                <span class="text-[10px] text-gray-500 font-bold uppercase block">DRI</span>
-                            </div>
-                            <div class="bg-gray-900/60 border border-gray-800 rounded-lg p-2.5 text-center">
-                                <span class="text-xl font-black text-lime-400 fifa-font" id="stat-def">--</span>
-                                <span class="text-[10px] text-gray-500 font-bold uppercase block">DEF</span>
-                            </div>
-                        </div>
-
-                        <p class="text-[9px] text-gray-600 font-medium uppercase tracking-widest text-center mt-5">Dados Oficiais Fornecidos por API-Sports</p>
-                    </div>
-                </div>
-
-            </div>
+            </section>
         </main>
     </div>
 
-    <footer class="border-t border-gray-900 bg-[#06070d] py-6 mt-16 text-center text-xs text-gray-600">
-        <p class="font-bold uppercase tracking-widest text-gray-500 fifa-font">EA SPORTS GEMINI TACTICS SYSTEM</p>
+    <footer class="border-t border-gray-900 bg-[#06070d] py-6 mt-16 text-center text-xs text-gray-500">
+        <p class="font-bold uppercase tracking-widest text-[10px]">EA SPORTS FC Tactical Pack Simulator v2.5</p>
+        <p class="text-[9px] text-gray-600 mt-1">Dados estruturados por Inteligência Artificial e integrados à API-Sports.</p>
     </footer>
 
     <script src="app.js"></script>

@@ -1,34 +1,39 @@
+/* style.css - Design e Estilização EA SPORTS FC Ultimate Team */
 
-
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,800;1,700&family=Plus+Jakarta+Sans:wght@400;500;700;900&display=swap');
 
 body {
     font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #0b0c16;
 }
 
 .fifa-font {
     font-family: 'Barlow Condensed', sans-serif;
 }
 
+/* Fundo Temático do Aplicativo */
 .fifa-bg {
     background: radial-gradient(circle at 50% 0%, #16192b 0%, #0b0c16 100%);
 }
 
+/* Gramado Tático Dinâmico */
 .soccer-field {
-    background: radial-gradient(circle at center, #144026 0%, #0d2b19 100%);
-    border: 2px solid rgba(255, 255, 255, 0.2);
+    background: radial-gradient(circle at center, #11331e 0%, #091a10 100%);
+    border: 2px solid rgba(255, 255, 255, 0.1);
     position: relative;
     overflow: hidden;
+    min-height: 480px;
 }
 
 .field-line {
     position: absolute;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     pointer-events: none;
 }
 
 .center-circle {
-    width: 120px;
-    height: 120px;
+    width: 140px;
+    height: 140px;
     border-radius: 50%;
     top: 50%;
     left: 50%;
@@ -39,66 +44,74 @@ body {
     width: 100%;
     top: 50%;
     left: 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .penalty-area-top {
     width: 60%;
-    height: 70px;
+    height: 80px;
     top: 0;
     left: 20%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .penalty-area-bot {
     width: 60%;
-    height: 70px;
+    height: 80px;
     bottom: 0;
     left: 20%;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* Estilização Oficial da Carta Dourada EA FC (Escudo Cortado) */
+.fifa-card-gold {
+    background: linear-gradient(135deg, #fceb92 0%, #e3ab1b 40%, #b87b00 100%);
+    clip-path: polygon(18% 0%, 82% 0%, 100% 12%, 100% 82%, 50% 100%, 0% 82%, 0% 12%);
+    border: 1px solid #fff4b8;
+    width: 100px;
+    height: 150px;
+    transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.animate-fade-in {
-    animation: fadeIn 0.4s ease-out forwards;
+.fifa-card-gold:hover {
+    transform: scale(1.1) translateY(-5px);
+    z-index: 30;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
 }
 
-* Estilo do Card do FIFA */ .fifa-card-gold {
-    background: linear-gradient(135deg, #ffe066 0%, #f5af19 50%, #e65c00 100%);
-    clip-path: polygon(0% 15%, 15% 0%, 85% 0%, 100% 15%, 100% 85%, 50% 100%, 0% 85%);
-    border: 2px solid #fff3cc;
-}
-
-.fifa-card-totw {
-    background: linear-gradient(135deg, #111111 0%, #333333 50%, #000000 100%);
-    clip-path: polygon(0% 15%, 15% 0%, 85% 0%, 100% 15%, 100% 85%, 50% 100%, 0% 85%);
-    border: 2px solid #ff0055;
-}
-
-/* Animação de abertura de pacotes ao renderizar */
-.pack-open-anim {
-    animation: packGlow 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-}
-
-@keyframes packGlow {
+/* Animação de Abertura de Pack (Zero Bugs Visual) */
+@keyframes packOpening {
     0% {
-        transform: scale(0.5);
-        filter: brightness(3) blur(10px);
         opacity: 0;
+        transform: scale(0.4) rotate(-5deg);
+        filter: brightness(2) blur(4px);
     }
-
     100% {
-        transform: scale(1);
-        filter: brightness(1) blur(0);
         opacity: 1;
+        transform: scale(1) rotate(0deg);
+        filter: brightness(1) blur(0);
     }
+}
+
+.pack-open-anim {
+    animation: packOpening 0.7s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+}
+
+/* Customização de Scrollbars para visual Premium */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #0b0c16;
+}
+::-webkit-scrollbar-thumb {
+    background: #1f233e;
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #a3e635;
 }
